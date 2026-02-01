@@ -197,6 +197,29 @@ code {
   font-size: 0.88em; color: #475569;
 }
 pre code { background: none; padding: 0; border-radius: 0; }
+/* Collapsible source blocks */
+details {
+  margin-bottom: 20px; border: 1px solid #E2E8F0; border-radius: 8px;
+  background: #F8FAFC; overflow: hidden;
+}
+details summary {
+  padding: 10px 16px; cursor: pointer; font-weight: 600; font-size: 14px;
+  color: #475569; list-style: none; user-select: none;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::before { content: "\25B6"; margin-right: 8px; font-size: 11px; display: inline-block; transition: transform 0.2s; }
+details[open] summary::before { transform: rotate(90deg); }
+details ul { padding: 4px 20px 12px 36px; margin: 0; }
+details li { margin-bottom: 4px; font-size: 13px; }
+details a { font-size: 13px; }
+/* Warning blockquote */
+blockquote.warning {
+  border-left: 4px solid #EF4444;
+  background: #FEF2F2; padding: 16px 20px;
+  border-radius: 0 8px 8px 0; margin-bottom: 20px;
+}
+blockquote.warning p { color: #991B1B; margin-bottom: 8px; }
+blockquote.warning p:last-child { margin-bottom: 0; }
 /* Divider */
 hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
 /* Back to Top */
@@ -299,6 +322,7 @@ hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
     <li><a href="#sec16" data-section="sec16">16. 未来预测模型</a></li>
     <li><a href="#sec17" data-section="sec17">17. 后市走势深度分析</a></li>
     <li><a href="#sec18" data-section="sec18">18. 总结与风险提示</a></li>
+    <li><a href="#sec19" data-section="sec19">19. 多维度市场分析</a></li>
     <li><a href="#appendix" data-section="appendix">附录</a></li>
   </ul>
 </aside>
@@ -1216,6 +1240,719 @@ hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
 <li><strong>技术风险</strong>: 量子计算、协议漏洞等技术风险虽然概率低但影响大</li>
 <li><strong>流动性风险</strong>: 在极端市场条件下，流动性可能骤然枯竭</li>
 </ol>
+</div>
+
+<hr>
+
+<!-- Section 19 -->
+<div class="section" id="sec19">
+<h2>19. 多维度市场分析 &mdash; 超越四年周期</h2>
+
+<blockquote>
+<p><strong>数据截止</strong>: 2026-02-01</p>
+<p>本章基于 2026 年 1 月末最新的宏观经济、ETF 资金流、链上指标、监管政策和地缘政治数据，对第 17 章的纯周期模型分析进行多维度补充与修正。核心问题：在 BTC ETF 上市超两年、宏观环境剧变的背景下，传统四年周期模型是否仍然有效？底部预测是否需要修正？</p>
+</blockquote>
+
+<hr>
+
+<h3>19.1 宏观经济环境</h3>
+
+<h4>19.1.1 美联储政策</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>当前联邦基金利率</td><td><strong>3.50% &ndash; 3.75%</strong></td></tr>
+<tr><td>2026年1月28日 FOMC 决议</td><td>维持不变（暂停连续3次降息）</td></tr>
+<tr><td>2025年累计降息</td><td>125bp（从 4.75-5.00% 降至 3.50-3.75%）</td></tr>
+<tr><td>市场预期下次降息</td><td>最早 2026年6月</td></tr>
+<tr><td>美联储新主席提名</td><td><strong>Kevin Warsh</strong>（鹰派，2026年5月15日接替鲍威尔）</td></tr>
+</tbody></table></div>
+
+<p><strong>影响评估</strong>: Warsh 提名是 1 月末 BTC 暴跌的核心催化剂之一。市场从预期「2026年降息3-4次」修正为「最多降息1-2次」，摩根大通预测 2026 年仅降息一次且不早于夏季。鹰派预期推高长端利率，压制风险资产估值。</p>
+
+<h4>19.1.2 通胀数据</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>2025年12月数据</th></tr></thead>
+<tbody>
+<tr><td>CPI 同比</td><td><strong>2.7%</strong></td></tr>
+<tr><td>核心 CPI 同比</td><td><strong>2.6%</strong>（2021年3月以来最低）</td></tr>
+<tr><td>CPI 环比</td><td>+0.3%</td></tr>
+<tr><td>核心 CPI 环比</td><td>+0.2%</td></tr>
+<tr><td>主要推动因素</td><td>住房 (+0.4%)、食品 (+0.7%)</td></tr>
+</tbody></table></div>
+
+<p>通胀虽在下降趋势中，但仍&ldquo;略高于&rdquo;美联储 2% 目标，为暂停降息提供了理由。下一次 CPI 发布（2026年1月数据）将于 <strong>2月11日</strong> 公布。</p>
+
+<h4>19.1.3 美元指数与全球流动性</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>DXY（2026-01-30）</td><td><strong>~97.15</strong></td></tr>
+<tr><td>1月跌幅</td><td>-2%（2025年6月以来最差月度表现）</td></tr>
+<tr><td>过去12个月跌幅</td><td><strong>-10.36%</strong></td></tr>
+<tr><td>52周区间</td><td>96.22 &ndash; 109.88</td></tr>
+<tr><td>年内低点</td><td><strong>95.5</strong>（2022年2月以来近4年最低）</td></tr>
+<tr><td>全球 M2（估算）</td><td><strong>~$127-128 万亿</strong></td></tr>
+<tr><td>美国 M2（2025-12）</td><td><strong>$22.41 万亿</strong>（同比 +3-4%）</td></tr>
+<tr><td>全球央行美元储备占比</td><td><strong>58.2%</strong>（1995年以来最低）</td></tr>
+</tbody></table></div>
+
+<p><strong>关键发现</strong>: 美元走弱理论上利好 BTC（历史负相关），但当前被风险偏好全面收缩所压制。全球 M2 温和扩张（3-4%）对资产价格中长期偏支撑，但 M2 变化需要 6-12 个月传导至市场。BRICS 国家推动去美元化（内部贸易本币结算从 35% 提升至 50%），1月全球资本从美债净流出 $180 亿、从美股净流出 $220 亿。</p>
+
+<h4>19.1.4 美国 10 年期国债收益率</h4>
+<p>当前 <strong>4.24-4.27%</strong>，Warsh 提名后上行约 5bp。10Y 收益率处于中性偏高水平，对 BTC 形成资金竞争压力&mdash;&mdash;无风险利率 4%+ 的环境下，零息高波动资产的机会成本显著。</p>
+
+<h4>19.1.5 美国财政状况</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>FY2026 Q1 赤字（10-12月）</td><td><strong>$6,020 亿</strong></td></tr>
+<tr><td>FY2025 国债利息支出</td><td><strong>$1.22 万亿</strong></td></tr>
+<tr><td>&ldquo;一大美丽法案&rdquo;(OBBBA) 十年新增债务</td><td><strong>$4.1 万亿</strong></td></tr>
+<tr><td>2027年公共债务/GDP</td><td>历史高位 <strong>106%</strong></td></tr>
+</tbody></table></div>
+
+<p>长期来看，持续扩大的财政赤字和债务货币化是 BTC「数字黄金」叙事的核心支撑，但短期内市场更关注利率和风险偏好。</p>
+
+<h4>19.1.6 全球央行政策分化</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>央行</th><th>当前利率</th><th>方向</th></tr></thead>
+<tbody>
+<tr><td>美联储</td><td>3.50-3.75%</td><td>暂停（鹰派倾向）</td></tr>
+<tr><td>欧洲央行</td><td>2.15%</td><td>暂停（中性）</td></tr>
+<tr><td>日本央行</td><td>0.75%</td><td>加息周期中（30年最高）</td></tr>
+</tbody></table></div>
+
+<p>全球流动性环境不再单向宽松，结构性分化增加了资本流动波动性。</p>
+
+<h4>19.1.7 宏观因子影响评估汇总</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>因子</th><th>当前状态</th><th>对 BTC 短期影响</th><th>对 BTC 中长期影响</th></tr></thead>
+<tbody>
+<tr><td>美联储利率政策</td><td>暂停降息 + 鹰派新主席</td><td><strong>利空</strong></td><td>中性（2026H2可能恢复降息）</td></tr>
+<tr><td>通胀</td><td>2.7%，缓慢下行</td><td>中性偏空</td><td>中性</td></tr>
+<tr><td>美元走弱 (DXY ~97)</td><td>12个月跌10%</td><td><strong>利多</strong>（被压制）</td><td><strong>利多</strong></td></tr>
+<tr><td>全球 M2 扩张</td><td>+3-4%，温和增长</td><td>中性（滞后6-12月）</td><td><strong>利多</strong></td></tr>
+<tr><td>10Y 收益率 4.27%</td><td>偏高</td><td><strong>利空</strong></td><td>中性</td></tr>
+<tr><td>美国财政赤字</td><td>扩大中</td><td>中性</td><td><strong>利多</strong>（长期叙事）</td></tr>
+<tr><td>全球央行分化</td><td>美暂停/欧暂停/日加息</td><td>利空</td><td>中性</td></tr>
+</tbody></table></div>
+
+<details><summary>&#128206; 19.1 数据来源 (点击展开)</summary><ul>
+<li><a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260128a.htm" target="_blank">美联储 FOMC 声明</a></li>
+<li><a href="https://www.cnbc.com/2026/01/28/fed-rate-decision-january-2026.html" target="_blank">CNBC - Fed Rate Decision Jan 2026</a></li>
+<li><a href="https://www.jpmorgan.com/insights/markets-and-economy/economy/fed-meeting-january-2026" target="_blank">摩根大通利率展望</a></li>
+<li><a href="https://www.bls.gov/news.release/archives/cpi_01132026.htm" target="_blank">美国 CPI 数据 (BLS)</a></li>
+<li><a href="https://tradingeconomics.com/united-states/currency" target="_blank">Trading Economics - USD</a> | <a href="https://www.marketpulse.com/markets/will-the-us-dollar-make-a-comeback-in-2026-dxy-outlook/" target="_blank">MarketPulse - DXY Outlook</a></li>
+<li><a href="https://fred.stlouisfed.org/series/M2SL" target="_blank">FRED - M2SL</a></li>
+<li><a href="https://www.babypips.com/learn/forex/global-m2-money-supply-liquidity-indicator" target="_blank">Babypips - Global M2</a></li>
+<li><a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve" target="_blank">US Treasury Daily Rates</a> | <a href="https://fred.stlouisfed.org/series/DGS10" target="_blank">FRED - DGS10</a></li>
+<li><a href="https://www.crfb.org/press-releases/treasury-confirms-602-billion-deficit-first-three-months-fy-2026" target="_blank">CRFB - $602B Deficit FY2026 Q1</a></li>
+<li><a href="https://fortune.com/2026/01/12/treasury-national-debt-interest/" target="_blank">Fortune - Debt Interest</a></li>
+<li><a href="https://www.crfb.org/blogs/top-13-fiscal-charts-2025" target="_blank">CRFB - Fiscal Charts 2025</a></li>
+<li><a href="https://kpmg.com/us/en/articles/2026/january-2026-central-bank-scanner.html" target="_blank">KPMG - Central Bank Scanner Jan 2026</a> | <a href="https://think.ing.com/articles/central-banks-predictions-for-2026/" target="_blank">ING - Central Bank Predictions 2026</a></li>
+<li><a href="https://www.cnbc.com/2026/01/23/boj-rate-decision-snap-election-takaichi-gdp.html" target="_blank">CNBC - BOJ Jan 2026</a></li>
+<li><a href="https://diplomaticwatch.com/2026-us-dollar-decline-why-its-happening-now-economic-impacts-and-what-history-teaches-us/" target="_blank">Diplomatic Watch - Dollar Decline</a></li>
+</ul></details>
+
+<hr>
+
+<h3>19.2 BTC 现货 ETF 资金流分析</h3>
+
+<h4>19.2.1 ETF 总体规模</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>美国现货 BTC ETF 总数</td><td>11 只</td></tr>
+<tr><td>总净资产 (AUM, 2026-01-05)</td><td><strong>$123.52B</strong></td></tr>
+<tr><td>累计净流入（自2024年1月）</td><td><strong>$57.78B</strong></td></tr>
+<tr><td>ETF 持有 BTC 占总供应</td><td><strong>~7%</strong></td></tr>
+<tr><td>累计现货加密 ETF 交易量</td><td><strong>&gt;$2 万亿</strong>（2026-01-02 突破）</td></tr>
+</tbody></table></div>
+
+<h4>19.2.2 资金流动态（2025年11月 &mdash; 2026年1月）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>时间段</th><th>净流入/流出</th><th>关键事件</th></tr></thead>
+<tbody>
+<tr><td>2025年11月</td><td><strong>-$34.8 亿</strong></td><td>自 ATH 下跌启动</td></tr>
+<tr><td>2025年12月</td><td><strong>-$10.9 亿</strong></td><td>持续流出</td></tr>
+<tr><td>2026-01-02</td><td><strong>+$4.71 亿</strong></td><td>新年开门红</td></tr>
+<tr><td>2026-01-05</td><td><strong>+$6.97 亿</strong></td><td>3个月最大单日流入</td></tr>
+<tr><td>2026-01-07~09</td><td><strong>-$11.28 亿</strong></td><td>3天流出抹平年初流入</td></tr>
+<tr><td>2026-01-20~26</td><td><strong>-$11.37 亿</strong></td><td>5天连续流出</td></tr>
+<tr><td><strong>2026-01-29</strong></td><td><strong>-$8.18 亿</strong></td><td><strong>自2025-11-20以来最大单日流出</strong></td></tr>
+<tr><td>2026年1月整月</td><td><strong>净流出约 $13.4 亿</strong></td><td>连续第3个月净流出</td></tr>
+</tbody></table></div>
+
+<p><strong>三个月合计流出约 $60 亿</strong>，叠加 2026年1月继续流出，ETF 已从「持续吸筹」转为「净抛压来源」。</p>
+
+<h4>19.2.3 主要 ETF 产品对比</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>产品</th><th>管理人</th><th>AUM</th><th>累计净流入</th><th>费率</th><th>市场份额</th></tr></thead>
+<tbody>
+<tr><td>IBIT</td><td>BlackRock</td><td>~$70B</td><td>$62.75B</td><td>0.25%</td><td><strong>~70%</strong></td></tr>
+<tr><td>FBTC</td><td>Fidelity</td><td>~$17.8B</td><td>$12.39B</td><td>0.25%</td><td>~14%</td></tr>
+<tr><td>GBTC</td><td>Grayscale</td><td>~$20B</td><td>-$17.4B (累计流出)</td><td>1.50%</td><td>~16%</td></tr>
+<tr><td>其他8只</td><td>各发行商</td><td>~$15.7B</td><td>&mdash;</td><td>0.19-0.25%</td><td>&mdash;</td></tr>
+</tbody></table></div>
+
+<p>GBTC 累计流出 $174 亿，但日均流出已从 2024 年初的 $6 亿+/天降至 2026 年 1 月的 $11-69M/天（1月29日恐慌日为 -$1.19 亿），不再是主要抛压来源。</p>
+
+<h4>19.2.4 机构持仓结构（2025Q3 13F 数据）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>投资者类型</th><th>持仓规模</th><th>占 ETF AUM</th></tr></thead>
+<tbody>
+<tr><td>投资顾问</td><td>~$17.4B（~185,000 BTC）</td><td>57%</td></tr>
+<tr><td>对冲基金</td><td>~$9.0B</td><td>28%</td></tr>
+<tr><td>券商/经纪商</td><td>~$4.3B</td><td>13%</td></tr>
+<tr><td>银行</td><td>~$655M</td><td>2%</td></tr>
+<tr><td><strong>合计 13F 持仓</strong></td><td><strong>占 ETF 总 AUM 24%</strong></td><td>&mdash;</td></tr>
+</tbody></table></div>
+
+<p><strong>主要机构持有者</strong>:</p>
+<ul>
+<li>Brevan Howard: $2.3B（Q2 2025 增持 71%）</li>
+<li>Morgan Stanley: $724M</li>
+<li>Wells Fargo: $491M</li>
+<li>Harvard Endowment: $441M（Q3 增持 257%）</li>
+<li>JP Morgan: $346M</li>
+</ul>
+
+<p><strong>关键发现</strong>: 机构平均配置比例仍低于 1%，长期上升空间巨大。但当前 ETF 净流出表明，机构并非简单地「越跌越买」，而是在宏观风险偏好收缩时同步减仓。</p>
+
+<h4>19.2.5 ETF 作为「双刃剑」</h4>
+<p>ETF 改变了 BTC 的市场微观结构:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>上行时</th><th>下行时</th></tr></thead>
+<tbody>
+<tr><td>持续吸筹压缩供给</td><td>同步赎回放大抛压</td></tr>
+<tr><td>降低波动率</td><td>与美股高度相关（相关系数达 0.88）</td></tr>
+<tr><td>机构化、正规化</td><td>失去「数字黄金」独立避险属性</td></tr>
+<tr><td>增加流动性深度</td><td>杠杆清算级联效应加剧</td></tr>
+</tbody></table></div>
+
+<p>2026年1月的数据完美展示了这一双刃剑效应: 1月29日 $8.18 亿 ETF 流出 + $1.68B 期货强制清算（93% 多头），形成了「机构赎回 &rarr; 价格下跌 &rarr; 杠杆清算 &rarr; 进一步下跌」的负反馈循环。</p>
+
+<details><summary>&#128206; 19.2 数据来源 (点击展开)</summary><ul>
+<li><a href="https://farside.co.uk/btc/" target="_blank">Farside Investors - BTC ETF Flows</a> | <a href="https://sosovalue.com" target="_blank">SoSoValue</a></li>
+<li><a href="https://www.coinglass.com/bitcoin-etf" target="_blank">CoinGlass - Bitcoin ETF</a> | <a href="https://bitbo.io/treasuries/us-etfs/" target="_blank">Bitbo - US ETF Tracker</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/02/bitcoin-etfs-lose-record-usd4-57-billion-in-two-months" target="_blank">CoinDesk - ETFs Lose Record $4.57B</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/30/u-s-listed-bitcoin-ether-etfs-bleed-nearly-usd1-billion-in-one-day" target="_blank">CoinDesk - ETFs Bleed $1B in One Day</a></li>
+<li><a href="https://finance.yahoo.com/news/bitcoin-etfs-absorb-697m-largest-170608644.html" target="_blank">Yahoo Finance - ETFs Absorb $697M</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/09/bitcoin-etf-optimism-fades-as-three-day-outflows-streak-erases-early-month-gains" target="_blank">CoinDesk - ETF Optimism Fades</a></li>
+<li><a href="https://coinshares.com/us/insights/research-data/13f-filings-of-bitcoin-etfs-q3-2025-institutional-report/" target="_blank">CoinShares - 13F Filings Q3 2025</a> | <a href="https://www.ccn.com/news/crypto/bitcoin-etf-holders-list-btc-investors-sec-13f-filing/" target="_blank">CCN - BTC ETF Holders</a></li>
+<li><a href="https://finance.yahoo.com/news/blackrock-ibit-nearing-100b-aum-101000792.html" target="_blank">Yahoo Finance - IBIT Nearing $100B</a></li>
+<li><a href="https://www.theblock.co/post/384196/cumulative-spot-crypto-etf-trading-volume-surpasses-2-trillion-doubling-in-half-the-time" target="_blank">The Block - Spot Crypto ETF Volume &gt;$2T</a></li>
+<li><a href="https://www.ainvest.com/news/bitcoin-etf-outflows-market-liquidity-2026-correction-unfolds-2601/" target="_blank">AInvest - ETF Outflows Jan 2026</a></li>
+</ul></details>
+
+<hr>
+
+<h3>19.3 链上指标深度解读</h3>
+
+<h4>19.3.1 交易所储备与供给结构</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th><th>信号</th></tr></thead>
+<tbody>
+<tr><td>交易所 BTC 储备</td><td>多年新低</td><td>供给紧缩（长期利多）</td></tr>
+<tr><td>2026年第1周净流出</td><td>38,508 BTC（较上周 +132%）</td><td>加速提币</td></tr>
+<tr><td>ETF 首2个交易日吸纳</td><td>$1.2B</td><td>供给压缩</td></tr>
+<tr><td>巨鲸交易所流入占比 (EMA14)</td><td>10个月新高</td><td><strong>警告</strong>: 大户可能准备抛售</td></tr>
+</tbody></table></div>
+
+<h4>19.3.2 长期持有者 (LTH) vs 短期持有者 (STH)</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>LTH 近30天净卖出</td><td><strong>~143,000 BTC（~$95 亿）</strong></td></tr>
+<tr><td>LTH 卖出速度</td><td>2025年8月以来最快</td></tr>
+<tr><td>5年以上持有者</td><td>近1个月增持 95,500 BTC（逆势吸筹）</td></tr>
+<tr><td>STH 成本基础（聚集区间）</td><td><strong>$92,100 &ndash; $117,400</strong></td></tr>
+<tr><td>当前价格 vs STH 成本</td><td><strong>远低于</strong>（STH 全面亏损）</td></tr>
+<tr><td>整体已实现价格</td><td><strong>$80,700</strong>（已被跌破）</td></tr>
+<tr><td>亏损 BTC 供应占比</td><td><strong>&gt;22%</strong>（2022年初以来最高）</td></tr>
+<tr><td>MVRV 比率</td><td><strong>1.8</strong></td></tr>
+</tbody></table></div>
+
+<p><strong>关键发现</strong>:</p>
+<ol>
+<li>LTH 在过去 30 天大规模抛售（$95 亿），但 5 年以上「钻石手」仍在增持</li>
+<li>BTC 已跌破整体已实现价格 $80,700，这是自 2023 年 10 月以来首次，历史上跌破已实现价格通常标志着深度熊市的确认</li>
+<li>STH 成本基础在 $92K-$117K 形成密集套牢区，构成中期强阻力</li>
+</ol>
+
+<h4>19.3.3 矿工投降信号</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>当前全网算力</td><td><strong>~950 EH/s</strong></td></tr>
+<tr><td>较10月峰值下降</td><td><strong>15-20%</strong>（从 ~1.1-1.2 ZH/s）</td></tr>
+<tr><td>Hash Ribbon 反转日期</td><td>2025-11-29</td></tr>
+<tr><td>投降持续时间</td><td><strong>~60 天</strong></td></tr>
+<tr><td>预计下次难度调整</td><td><strong>-17%</strong>（2021年中国禁矿以来最大）</td></tr>
+<tr><td>矿工每日收入 vs 成本</td><td>收入 $38/PH/s &lt; 成本 $44/PH/s</td></tr>
+<tr><td>12月每 EH/s 收入</td><td><strong>$38,700</strong>（历史最低）</td></tr>
+<tr><td>中国新疆关停</td><td>1.3 GW 容量（~40万台矿机，占全球 ~10%）</td></tr>
+<tr><td>美国矿企全球算力占比</td><td><strong>41%</strong>（历史最高）</td></tr>
+</tbody></table></div>
+
+<p><strong>关键发现</strong>: Hash Ribbon 投降是<strong>强力反向指标</strong>。历史上每次 Hash Ribbon 投降后都出现了重大价格上涨:</p>
+<ul>
+<li>2024年中（减半后投降）&rarr; BTC 从 $49K 涨至 $100K+</li>
+<li>2022年末（FTX 暴雷后投降）&rarr; BTC 从 $15K 涨至 $69K</li>
+<li>当前投降已持续 60 天，信号正在成熟</li>
+</ul>
+
+<h4>19.3.4 稳定币市值 &mdash; 场外弹药</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>稳定币</th><th>市值</th><th>2025年增幅</th></tr></thead>
+<tbody>
+<tr><td>USDT</td><td><strong>$187.0B</strong></td><td>+36%</td></tr>
+<tr><td>USDC</td><td><strong>$75.7B</strong></td><td>+73%</td></tr>
+<tr><td>其他（USDe 等）</td><td>~$55B</td><td>&mdash;</td></tr>
+<tr><td><strong>总计</strong></td><td><strong>$314 &ndash; $318B</strong></td><td><strong>+50%</strong></td></tr>
+</tbody></table></div>
+
+<p>稳定币总市值创历史新高，代表了巨量场外资金。$318B 的稳定币储备是潜在的「干火药」&mdash;&mdash;一旦风险偏好回升，可迅速转化为 BTC 买盘。</p>
+
+<h4>19.3.5 期货与期权市场结构</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td>期货 OI</td><td>~$61B（较 ATH $92B 下降 33%）</td><td>去杠杆化进行中</td></tr>
+<tr><td>期权 OI</td><td>~$65B（首次超过期货）</td><td>市场结构成熟化</td></tr>
+<tr><td>IBIT 期权占比</td><td>52%</td><td>BlackRock 主导期权市场</td></tr>
+<tr><td>CME Put/Call OI 比</td><td>1.12</td><td>偏空（看跌多于看涨）</td></tr>
+<tr><td>永续合约资金费率</td><td><strong>0.003%</strong></td><td>接近中性（略偏多）</td></tr>
+<tr><td>1月29日多头清算</td><td><strong>$1.68B</strong>（93% 为多头）</td><td>杠杆多头被清洗</td></tr>
+</tbody></table></div>
+
+<p>期权 OI 首次超过期货 OI，标志着市场从「杠杆投机」转向「波动率交易与风险管理」&mdash;&mdash;这是市场成熟化的重要信号。</p>
+
+<h4>19.3.6 恐惧与贪婪指数</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>日期</th><th>读数</th><th>区间</th></tr></thead>
+<tbody>
+<tr><td>2026-01-09</td><td>&mdash;</td><td>恐惧</td></tr>
+<tr><td>2026-01-17</td><td>&mdash;</td><td>贪婪（短暂反弹）</td></tr>
+<tr><td>2026-01-28</td><td>26</td><td>恐惧</td></tr>
+<tr><td><strong>2026-01-30</strong></td><td><strong>16</strong></td><td><strong>极度恐惧</strong></td></tr>
+</tbody></table></div>
+
+<p><strong>16</strong> 是 2026 年至今最低读数。历史上极度恐惧区间（&lt;20）往往对应局部底部，但在真正的熊市中可以长期维持。</p>
+
+<h4>19.3.7 链上指标综合评估</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>当前信号</th><th>时间维度</th></tr></thead>
+<tbody>
+<tr><td>交易所储备低</td><td>利多</td><td>中长期</td></tr>
+<tr><td>LTH 大规模抛售</td><td>利空</td><td>短期</td></tr>
+<tr><td>5yr+ 持有者增持</td><td>利多</td><td>长期</td></tr>
+<tr><td>STH 全面亏损</td><td>利空（抛压）</td><td>短中期</td></tr>
+<tr><td>跌破已实现价格</td><td>利空（熊市确认）</td><td>中期</td></tr>
+<tr><td>矿工投降 (Hash Ribbon)</td><td><strong>反向利多</strong></td><td>中期</td></tr>
+<tr><td>稳定币 $318B</td><td>利多（干火药）</td><td>中期</td></tr>
+<tr><td>极度恐惧 (16)</td><td><strong>反向利多</strong></td><td>短期</td></tr>
+<tr><td>期货去杠杆 (-33%)</td><td>利多（更健康结构）</td><td>中期</td></tr>
+<tr><td>资金费率中性</td><td>中性</td><td>短期</td></tr>
+</tbody></table></div>
+
+<p><strong>综合判断</strong>: 链上数据呈现典型的「后期洗盘」特征&mdash;&mdash;弱手被清洗（STH 亏损、杠杆清算、LTH 出货），但结构性指标（交易所储备、稳定币、矿工投降、5yr+ 持有者）均指向中期底部正在形成。</p>
+
+<details><summary>&#128206; 19.3 数据来源 (点击展开)</summary><ul>
+<li><a href="https://cryptoquant.com/asset/btc/chart/exchange-flows/exchange-reserve" target="_blank">CryptoQuant - Exchange Reserve</a> | <a href="https://blockchainreporter.net/bitcoin-exchange-balances-hit-multi-year-lows-what-20000-btc-exodus-signals-for-2026/" target="_blank">Blockchain Reporter - Exchange Balances</a></li>
+<li><a href="https://finance.yahoo.com/news/bitcoin-whales-accelerate-exchange-activity-123727209.html" target="_blank">Yahoo Finance - Whales Accelerate Exchange Activity</a></li>
+<li><a href="https://www.ainvest.com/news/bitcoin-long-term-holder-selling-sets-records-divergent-2026-market-dynamics-2601/" target="_blank">AInvest - LTH Selling Sets Records</a> | <a href="https://finance.yahoo.com/news/bitcoin-crash-incoming-long-term-121715066.html" target="_blank">Yahoo Finance - LTH Dump</a></li>
+<li><a href="https://www.newsbtc.com/bitcoin-news/bitcoins-on-chain-roadmap-111000-143000/" target="_blank">NewsBTC - On-Chain Roadmap $111K-$143K</a> | <a href="https://insights.glassnode.com/the-week-onchain-week-01-2026/" target="_blank">Glassnode - Week On-Chain W01 2026</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/19/btc-hashrate-drops-15-from-october-high-as-miner-capitulation-drags-into-almost-60-days" target="_blank">CoinDesk - Hashrate Drops 15%</a> | <a href="https://www.coindesk.com/markets/2026/01/27/as-bitcoin-miners-cut-unprofitable-production-hash-ribbon-metric-points-to-btc-price-rebound" target="_blank">CoinDesk - Hash Ribbon Points to Rebound</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/16/early-2026-tailwinds-for-bitcoin-miners-as-hashrate-falls-profitability-improves-jpmorgan" target="_blank">CoinDesk - Early 2026 Tailwinds for Miners</a> | <a href="https://theminermag.com/news/2026-01-20/bitcoin-hashrate-difficulty-pullback" target="_blank">TheMinerMag - Hashrate Slides 14%</a></li>
+<li><a href="https://www.theblock.co/post/383590/bitcoin-mining-hashrate-drop-bullish-vaneck" target="_blank">The Block - Declining Mining Bullish</a></li>
+<li><a href="https://defillama.com/stablecoins" target="_blank">DefiLlama - Stablecoins</a> | <a href="https://www.coindesk.com/markets/2026/01/06/circle-s-usdc-outpaces-growth-of-tether-s-usdt-for-second-year-running" target="_blank">CoinDesk - USDC Outpaces USDT</a></li>
+<li><a href="https://www.coinglass.com/open-interest/BTC" target="_blank">CoinGlass - Open Interest</a> | <a href="https://www.coindesk.com/markets/2026/01/13/bitcoin-options-open-interest-extends-dominance-over-futures-damping-btc-volatility" target="_blank">CoinDesk - Options OI Extends Dominance</a></li>
+<li><a href="https://www.coinglass.com/FundingRate" target="_blank">CoinGlass - Funding Rate</a> | <a href="https://www.ainvest.com/news/bitcoin-funding-rates-improve-signal-decisive-glassnode-2601/" target="_blank">AInvest - Funding Rates Improve</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/31/bitcoin-fear-sentiment-hits-a-2026-high-as-price-lingers-under-usd83-000" target="_blank">CoinDesk - Fear Hits 2026 High</a> | <a href="https://coinmarketcap.com/charts/fear-and-greed-index/" target="_blank">CoinMarketCap - Fear &amp; Greed</a></li>
+<li><a href="https://www.coinglass.com/pro/i/nupl" target="_blank">CoinGlass - NUPL</a> | <a href="https://studio.glassnode.com/metrics?a=BTC&m=indicators.NetUnrealizedProfitLoss" target="_blank">Glassnode - NUPL</a></li>
+</ul></details>
+
+<hr>
+
+<h3>19.4 监管与结构性变化</h3>
+
+<h4>19.4.1 美国监管框架</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>立法/政策</th><th>状态</th><th>影响</th></tr></thead>
+<tbody>
+<tr><td>GENIUS Act（稳定币法）</td><td><strong>已签署</strong>（2025-07-18）</td><td>要求100%储备，2027年1月生效</td></tr>
+<tr><td>CLARITY Act（市场结构法）</td><td>2026年1月参议院审议中</td><td>CFTC 管辖现货，SEC 管辖证券</td></tr>
+<tr><td>SEC &ldquo;Project Crypto&rdquo;</td><td>推进中</td><td>创新豁免，合规优先于执法</td></tr>
+<tr><td>现货 ETF 审批加速</td><td>通用上架标准（270天&rarr;75天）</td><td>加速山寨币 ETF 审批</td></tr>
+<tr><td>已上市现货 ETF</td><td>BTC、ETH、SOL、LTC、XRP、HBAR</td><td>加密资产主流化</td></tr>
+<tr><td>待审山寨币 ETF 申请</td><td><strong>126+ 只</strong></td><td>资本可能分流</td></tr>
+<tr><td>CBDC 禁令</td><td>行政令明确禁止</td><td>利好去中心化加密资产</td></tr>
+</tbody></table></div>
+
+<p>2025-2026年是美国加密监管「从敌对到拥抱」的历史转折点。SEC 主席 Atkins 推动的 Project Crypto 和 CLARITY Act（通过概率 50-60%）将为行业提供前所未有的法律确定性。<strong>风险提示</strong>: 2026年11月中期选举可能改变国会控制权，亲加密政策环境存在逆转风险。</p>
+
+<h4>19.4.2 美国战略比特币储备</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>层级</th><th>状态</th><th>规模</th></tr></thead>
+<tbody>
+<tr><td>联邦行政令 (2025-03-06)</td><td>已签署</td><td>~198,000 BTC（没收资产，永不出售）</td></tr>
+<tr><td>BITCOIN Act of 2025</td><td>委员会审议中</td><td>授权购买最多 <strong>100 万 BTC</strong> / 5年</td></tr>
+<tr><td>预算中性策略</td><td>开发中</td><td>可能重新评估黄金储备（$42.22/盎司&rarr;市价）</td></tr>
+<tr><td>德克萨斯州</td><td><strong>已签署</strong> (2025-06-22)</td><td>S.B.21 创建州级BTC储备</td></tr>
+<tr><td>新罕布什尔州</td><td><strong>已签署</strong> (2025-05-06)</td><td>允许州财政投资 &gt;$500B 市值数字资产</td></tr>
+<tr><td>亚利桑那州</td><td>部分签署</td><td>HB 2749（没收资产），SB 1025 被否决</td></tr>
+</tbody></table></div>
+
+<p><strong>潜在影响</strong>: 如果联邦政府开始主动购买 BTC（而非仅持有没收资产），将构成史无前例的需求冲击。黄金储备重估策略（从法定 $42.22/oz 调至市价）可释放数千亿美元用于 BTC 采购，但时间表高度不确定。</p>
+
+<h4>19.4.3 企业购买浪潮</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>公司</th><th>持仓</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td>Strategy (MSTR)</td><td><strong>712,647 BTC</strong></td><td>全球最大，占总供应 &gt;3.4%</td></tr>
+<tr><td>Marathon Digital</td><td>~53,250 BTC</td><td>挖矿 + 持有</td></tr>
+<tr><td>Twenty One Capital</td><td>~43,514 BTC</td><td>Top 3</td></tr>
+<tr><td>Metaplanet（日本）</td><td>35,102 BTC</td><td>股价涨 3,000%+</td></tr>
+<tr><td>Tesla</td><td>11,509 BTC</td><td>自2021年持有</td></tr>
+<tr><td><strong>~190 家上市公司</strong></td><td>约占流通供应 <strong>5%</strong></td><td>2025年合计买入 <strong>$960 亿</strong></td></tr>
+</tbody></table></div>
+
+<p>Strategy 2026年1月购入约 40,150 BTC（$37.6 亿），但面临关键问题: 股价从 ATH $473.83 暴跌至 ~$149.71（-56.7%），每股 BTC 增量趋近零（稀释加速），2025Q4 未实现亏损 $174.4 亿，mNAV &lt; 1.0x。</p>
+
+<h4>19.4.4 全球 ETF 扩张与 BTC DeFi</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>市场/领域</th><th>状态</th></tr></thead>
+<tbody>
+<tr><td>香港</td><td>9只虚拟资产 ETF，支持实物申赎</td></tr>
+<tr><td>韩国</td><td>计划 2026 年推出</td></tr>
+<tr><td>ETH ETF AUM</td><td>~$20B</td></tr>
+<tr><td>Morgan Stanley</td><td>2026-01-06 申请 ETH ETF（含质押）</td></tr>
+<tr><td>BTCFi TVL</td><td><strong>$8.6B</strong>（2024初 $307M，+2,700%）</td></tr>
+<tr><td>2026年底 BTCFi 预测</td><td><strong>$50B</strong></td></tr>
+<tr><td>BTC 休眠流动性</td><td>&gt;<strong>$1.5 万亿</strong></td></tr>
+</tbody></table></div>
+
+<p>BTC Layer 2 生态（闪电网络、Stacks、Rootstock 等）快速发展，正在释放 BTC 作为「生产性资产」的潜力。</p>
+
+<details><summary>&#128206; 19.4 数据来源 (点击展开)</summary><ul>
+<li><a href="https://www.dlnews.com/articles/regulation/key-dates-for-us-crypto-regulation-in-2026/" target="_blank">DL News - Key Dates for US Crypto Regulation 2026</a></li>
+<li><a href="https://coinpedia.org/news/us-crypto-regulation-in-2026-key-laws-sec-changes-and-what-comes-next/" target="_blank">Coinpedia - US Crypto Regulation 2026</a> | <a href="https://www.theblock.co/post/383241/crypto-regulation-2026-sec-ambitious-agenda-empowered-cftc" target="_blank">The Block - SEC Ambitious Agenda</a></li>
+<li><a href="https://www.skadden.com/insights/publications/2026/2026-insights/sector-spotlights/with-supportive-new-regulations-digital-assets-are-likely-to-proliferate-in-2026" target="_blank">Skadden - Supportive New Regulations</a></li>
+<li><a href="https://www.whitehouse.gov/presidential-actions/2025/01/strengthening-american-leadership-in-digital-financial-technology/" target="_blank">White House - Executive Order</a></li>
+<li><a href="https://en.wikipedia.org/wiki/U.S._Strategic_Bitcoin_Reserve" target="_blank">Wikipedia - U.S. Strategic Bitcoin Reserve</a></li>
+<li><a href="https://www.cnbc.com/2026/01/17/texas-us-states-budgets-bitcoin-crypto-strategic-reserve.html" target="_blank">CNBC - States Race to Put BTC on Balance Sheet</a></li>
+<li><a href="https://www.ainvest.com/news/bitcoin-acquired-government-2026-strategic-reserve-2601/" target="_blank">AInvest - Government Could Acquire BTC in 2026</a> | <a href="https://bitcoinmagazine.com/news/the-united-states-is-going-to-buy-bitcoin" target="_blank">Bitcoin Magazine - US Going to Buy Bitcoin</a></li>
+<li><a href="https://www.strategy.com/purchases" target="_blank">Strategy.com - Purchases</a> | <a href="https://www.coindesk.com/markets/2026/01/20/michael-saylor-s-strategy-purchases-another-usd2-13-billion-in-bitcoin" target="_blank">CoinDesk - Strategy Purchases $2.13B</a></li>
+<li><a href="https://stockanalysis.com/stocks/mstr/" target="_blank">StockAnalysis - MSTR</a></li>
+<li><a href="https://phemex.com/news/article/2026-report-highlights-corporate-bitcoin-adoption-trends-56652" target="_blank">Phemex - Corporate Bitcoin Adoption 2026</a> | <a href="https://www.demandsage.com/public-companies-holding-btc/" target="_blank">DemandsAge - Public Companies Holding BTC</a></li>
+<li><a href="https://bitcoinist.com/south-korea-bitcoin-spot-etf-targets-2026-rollout/" target="_blank">Bitcoinist - South Korea Spot ETF</a></li>
+<li><a href="https://www.ainvest.com/news/bitcoin-2026-institutional-transition-rise-bitcoin-layer-2-infrastructure-2512/" target="_blank">AInvest - Bitcoin Layer 2 Infrastructure</a> | <a href="https://swapspace.co/blog/top-bitcoin-layer-2-projects-to-know-in-2026" target="_blank">SwapSpace - Bitcoin L2 Projects</a></li>
+</ul></details>
+
+<hr>
+
+<h3>19.5 地缘政治风险事件</h3>
+
+<p>2026年1月经历了多重地缘冲击:</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>事件</th><th>日期</th><th>BTC 影响</th></tr></thead>
+<tbody>
+<tr><td>格陵兰关税危机</td><td>1月中</td><td>S&amp;P 500 单日跌 2.1%，蒸发 $1.2 万亿</td></tr>
+<tr><td>美国平均关税率</td><td>截至1月23日</td><td><strong>14.0%</strong>（1946年以来最高）</td></tr>
+<tr><td>Kevin Warsh 提名</td><td>1月30日</td><td>黄金单日跌11%，白银跌31%，BTC 同步下跌</td></tr>
+<tr><td>伊朗班达尔阿巴斯爆炸</td><td>1月31日</td><td>BTC 从 ~$82K 跌破 $78K，周末最低至 ~$77K</td></tr>
+<tr><td>$9B BTC 期权到期</td><td>1月30日</td><td>加剧波动</td></tr>
+<tr><td>美国政府短暂关闭</td><td>1月末周末</td><td>加剧不确定性</td></tr>
+</tbody></table></div>
+
+<p><strong>1月31日伊朗事件详情</strong>: 班达尔阿巴斯港爆炸（该港口处理全球约 1/5 海运石油），触发 BTC 多头清算 $2.24 亿，一个航母战斗群部署在伊朗附近。</p>
+
+<p><strong>核心启示</strong>: BTC 的「ETF 化」使其在所有地缘冲击中均与纳斯达克同步下跌，彻底丧失了「地缘危机避险」叙事。1月30日的事件更为极端&mdash;&mdash;贵金属和加密货币同时暴跌，这不是加密特有的弱势，而是全局性风险偏好崩塌。</p>
+
+<details><summary>&#128206; 19.5 数据来源 (点击展开)</summary><ul>
+<li><a href="https://www.nbcnews.com/business/markets/stock-market-trump-tariffs-greenland-rcna254918" target="_blank">NBC News - Markets Plunge on Greenland Tariffs</a></li>
+<li><a href="https://taxfoundation.org/research/all/federal/trump-tariffs-trade-war/" target="_blank">Tax Foundation - Trump Tariffs</a></li>
+<li><a href="https://www.coindesk.com/markets/2026/01/31/bitcoin-plunges-under-usd80-000-as-u-s-iran-attacks-deepen" target="_blank">CoinDesk - Bitcoin Plunges Under $80K</a> | <a href="https://www.cnn.com/2026/01/31/middleeast/iran-blast-bandar-abbas-intl" target="_blank">CNN - Iran Blast Bandar Abbas</a></li>
+<li><a href="https://www.tradingview.com/news/financemagnates:2178e25ac094b:0-why-bitcoin-is-falling-today-btc-price-drops-to-83k-two-month-low/" target="_blank">TradingView - Why Bitcoin Is Falling</a></li>
+<li><a href="https://blog.tapbit.com/crypto-liquidations-hit-570m-on-january-29-2026-btc-below-86k-full-breakdown-recovery-outlook/" target="_blank">Tapbit - Crypto Liquidations $570M</a></li>
+<li><a href="https://www.cmegroup.com/insights/economic-research/2025/why-is-bitcoin-moving-in-tandem-with-equities.html" target="_blank">CME Group - BTC Equity Correlation</a> | <a href="https://www.nasdaq.com/articles/bitcoin-performance-analysis-shows-strong-correlation-sp-500" target="_blank">Nasdaq - BTC S&amp;P Correlation</a></li>
+</ul></details>
+
+<hr>
+
+<h3>19.6 多因子综合评估模型</h3>
+
+<p>将所有维度的分析汇总，按影响方向和严重程度分类:</p>
+
+<h4>利空因子</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>因子</th><th>严重程度</th><th>时间维度</th><th>数据支撑</th></tr></thead>
+<tbody>
+<tr><td>美联储暂停降息 + 鹰派新主席</td><td><strong>高</strong></td><td>短中期</td><td>Warsh提名，2026最多降息1次</td></tr>
+<tr><td>ETF 连续3个月净流出</td><td><strong>高</strong></td><td>短期</td><td>11-1月累计流出 ~$60 亿</td></tr>
+<tr><td>LTH 大规模抛售</td><td><strong>高</strong></td><td>短期</td><td>30天卖出 143K BTC ($95 亿)</td></tr>
+<tr><td>跌破整体已实现价格</td><td><strong>高</strong></td><td>中期</td><td>$80,700 被跌破，2023年10月以来首次</td></tr>
+<tr><td>STH 全面套牢</td><td><strong>中高</strong></td><td>中期</td><td>$92K-$117K 密集套牢区</td></tr>
+<tr><td>地缘冲击（关税+伊朗）</td><td><strong>高</strong></td><td>短期</td><td>1月末多重叠加冲击</td></tr>
+<tr><td>BTC 与美股高相关性</td><td><strong>中</strong></td><td>持续</td><td>相关系数达 0.88</td></tr>
+<tr><td>10Y 收益率偏高</td><td><strong>中</strong></td><td>中期</td><td>4.27%，资金竞争</td></tr>
+<tr><td>2026年11月中期选举风险</td><td><strong>中</strong></td><td>中长期</td><td>亲加密政策可能逆转</td></tr>
+</tbody></table></div>
+
+<h4>利多因子</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>因子</th><th>强度</th><th>时间维度</th><th>数据支撑</th></tr></thead>
+<tbody>
+<tr><td>矿工投降 (Hash Ribbon)</td><td><strong>高</strong></td><td>中期</td><td>60天投降，历史强反向指标</td></tr>
+<tr><td>稳定币 $318B 历史新高</td><td><strong>高</strong></td><td>中期</td><td>场外干火药充裕</td></tr>
+<tr><td>交易所储备多年新低</td><td><strong>高</strong></td><td>中长期</td><td>供给持续紧缩</td></tr>
+<tr><td>极度恐惧 (16)</td><td><strong>中高</strong></td><td>短期</td><td>历史上常对应局部底部</td></tr>
+<tr><td>5yr+ 持有者逆势增持</td><td><strong>中</strong></td><td>长期</td><td>近月增 95,500 BTC</td></tr>
+<tr><td>期货去杠杆化 (-33%)</td><td><strong>中</strong></td><td>中期</td><td>更健康的市场结构</td></tr>
+<tr><td>战略 BTC 储备（联邦+州）</td><td><strong>高</strong></td><td>中长期</td><td>198K BTC 不卖出，BITCOIN Act 待审</td></tr>
+<tr><td>美元走弱 (DXY -10%)</td><td><strong>中</strong></td><td>中长期</td><td>历史与 BTC 负相关</td></tr>
+<tr><td>全球 M2 温和扩张</td><td><strong>中</strong></td><td>长期</td><td>+3-4%，滞后6-12月传导</td></tr>
+<tr><td>企业持续采购</td><td><strong>中高</strong></td><td>持续</td><td>MSTR 1月买入 $37.6 亿</td></tr>
+<tr><td>监管框架明朗化</td><td><strong>高</strong></td><td>中长期</td><td>GENIUS Act 已签, CLARITY Act 推进中</td></tr>
+<tr><td>BTCFi 生态增长</td><td><strong>中</strong></td><td>长期</td><td>TVL 从 $307M &rarr; $8.6B</td></tr>
+</tbody></table></div>
+
+<hr>
+
+<h3>19.7 修正后的情景分析</h3>
+
+<p>综合多维度因子，对第 17 章的纯周期模型进行修正。</p>
+
+<h4>修正逻辑</h4>
+<p>第 17 章基于纯周期模型给出的概率加权底部为 <strong>$52,000 - $62,000</strong>。多维度分析发现以下结构性修正因子:</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>修正因子</th><th>方向</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td>ETF「地板效应」</td><td>上调底部 +$5K-$10K</td><td>$123B AUM + 机构持仓提供流动性支撑</td></tr>
+<tr><td>战略储备政策</td><td>上调底部 +$3K-$5K</td><td>联邦不卖出 + 潜在主动购买</td></tr>
+<tr><td>企业采购</td><td>上调底部 +$2K-$3K</td><td>MSTR 等每周持续购入</td></tr>
+<tr><td>稳定币干火药 $318B</td><td>上调底部 +$3K-$5K</td><td>历史最大场外资金池</td></tr>
+<tr><td>矿工投降信号</td><td>缩短底部时间</td><td>投降结束后通常快速反弹</td></tr>
+<tr><td>美联储鹰派 + 地缘风险</td><td>下调底部 -$3K-$5K</td><td>短期压力超预期</td></tr>
+<tr><td>BTC 跌破已实现价格</td><td>下调底部 -$2K-$3K</td><td>熊市确认信号</td></tr>
+<tr><td>高相关性 + ETF 抛压</td><td>下调底部 -$2K-$3K</td><td>负反馈循环风险</td></tr>
+</tbody></table></div>
+
+<p><strong>净修正</strong>: 上调因子合计 +$13K-$23K，下调因子合计 -$7K-$11K，<strong>净上调约 $6K-$12K</strong>。</p>
+
+<h4>情景 A: 结构性底部已接近 (概率: 30%)</h4>
+<p><strong>逻辑</strong>: ETF + 企业 + 战略储备三重支撑 + 矿工投降接近尾声 + 极度恐惧反转</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>价格区间</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1 (底部区间)</td><td><strong>$73,000 - $78,000</strong></td></tr>
+<tr><td>2026 Q2</td><td>$80,000 - $95,000</td></tr>
+<tr><td>2026 Q3-Q4</td><td>$90,000 - $115,000</td></tr>
+<tr><td>2027</td><td>$110,000 - $150,000</td></tr>
+</tbody></table></div>
+<ul>
+<li>最大回撤: <strong>-40% ~ -45%</strong>（从 ATH）</li>
+<li>底部时间: <strong>2026年2-3月</strong>（已接近或已到）</li>
+<li>关键验证: 价格守住减半价 $63,818 + 已实现价格 $80,700 快速收复</li>
+</ul>
+
+<h4>情景 B: 温和熊市，有支撑 (概率: 45%)</h4>
+<p><strong>逻辑</strong>: 遵循周期规律但回撤幅度因市场成熟化和结构性支撑而显著递减</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>价格区间</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$65,000 - $80,000</td></tr>
+<tr><td>2026 Q3 (底部区间)</td><td><strong>$58,000 - $68,000</strong></td></tr>
+<tr><td>2026 Q4</td><td>$65,000 - $80,000</td></tr>
+<tr><td>2027 H1</td><td>$80,000 - $100,000</td></tr>
+<tr><td>2027 H2 - 2028</td><td>$100,000 - $140,000</td></tr>
+</tbody></table></div>
+<ul>
+<li>最大回撤: <strong>-48% ~ -55%</strong>（从 ATH）</li>
+<li>底部价格: <strong>~$58,000 - $68,000</strong></li>
+<li>底部时间: <strong>2026年7-9月</strong></li>
+<li>恢复 ATH 时间: <strong>2027年下半年 - 2028年初</strong></li>
+</ul>
+
+<h4>情景 C: 深度回调 / 黑天鹅叠加 (概率: 25%)</h4>
+<p><strong>逻辑</strong>: 地缘冲突升级 + 美股大幅回调 + ETF 级联赎回 + 全球流动性危机</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>价格区间</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$55,000 - $75,000</td></tr>
+<tr><td>2026 Q3-Q4</td><td>$45,000 - $60,000</td></tr>
+<tr><td>2027 Q1 (底部)</td><td><strong>$42,000 - $50,000</strong></td></tr>
+<tr><td>2027 H2</td><td>$55,000 - $75,000</td></tr>
+<tr><td>2028</td><td>$70,000 - $110,000</td></tr>
+</tbody></table></div>
+<ul>
+<li>最大回撤: <strong>-60% ~ -67%</strong>（从 ATH）</li>
+<li>底部价格: <strong>~$42,000 - $50,000</strong></li>
+<li>底部时间: <strong>2027年Q1</strong></li>
+<li>触发条件: 伊朗冲突全面升级 / 美股回调 &gt;20% / 重大加密行业事件</li>
+</ul>
+
+<h4>修正后概率加权预测对比</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>纯周期模型（第17章）</th><th>多维度修正（本章）</th><th>变化</th></tr></thead>
+<tbody>
+<tr><td><strong>预期底部价格</strong></td><td>$52,000 - $62,000</td><td><strong>$58,000 - $68,000</strong></td><td><strong>上调 ~$6K</strong></td></tr>
+<tr><td><strong>预期底部时间</strong></td><td>2026年9-10月</td><td><strong>2026年6-9月</strong></td><td><strong>可能提前</strong></td></tr>
+<tr><td><strong>预期最大回撤</strong></td><td>-53% ~ -58%</td><td><strong>-48% ~ -55%</strong></td><td><strong>幅度收窄</strong></td></tr>
+<tr><td><strong>恢复 ATH 时间</strong></td><td>2027年底 ~ 2028Q2</td><td><strong>2027年H2 ~ 2028年初</strong></td><td>略提前</td></tr>
+<tr><td><strong>2028减半前价格</strong></td><td>$90,000 - $130,000</td><td><strong>$95,000 - $140,000</strong></td><td>略上调</td></tr>
+</tbody></table></div>
+
+<hr>
+
+<h3>19.8 关键监控指标</h3>
+
+<p>以下指标可用于跟踪市场方向和验证情景假设:</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>看多阈值</th><th>看空阈值</th><th>当前值</th><th>数据源</th></tr></thead>
+<tbody>
+<tr><td>Mayer Multiple</td><td>&gt;1.0</td><td>&lt;0.6</td><td><strong>0.756</strong></td><td>价格 / MA200</td></tr>
+<tr><td>Hash Ribbon</td><td>投降结束（30MA 上穿 60MA）</td><td>投降持续</td><td><strong>投降中（60天）</strong></td><td>算力均线</td></tr>
+<tr><td>ETF 周净流入</td><td>连续2周正流入</td><td>连续3周负流入</td><td><strong>负流入</strong></td><td>SoSoValue / Farside</td></tr>
+<tr><td>恐惧贪婪指数</td><td>&gt;50（贪婪）</td><td>&lt;20（极度恐惧）</td><td><strong>16</strong></td><td>Alternative.me</td></tr>
+<tr><td>DXY</td><td>&lt;95（弱美元）</td><td>&gt;103（强美元）</td><td><strong>~97</strong></td><td>TradingView</td></tr>
+<tr><td>稳定币市值</td><td>持续增长（&gt;$320B）</td><td>收缩（&lt;$300B）</td><td><strong>$314-318B</strong></td><td>DefiLlama</td></tr>
+<tr><td>BTC 交易所储备</td><td>持续下降</td><td>急剧上升</td><td><strong>多年新低</strong></td><td>CryptoQuant</td></tr>
+<tr><td>永续合约资金费率</td><td>&gt;0.01%（多头控制）</td><td>&lt;-0.01%（空头控制）</td><td><strong>0.003%</strong></td><td>CoinGlass</td></tr>
+<tr><td>价格 vs MA200</td><td>站上 MA200</td><td>远离 MA200 &gt;30%</td><td><strong>-24.4%</strong></td><td>&mdash;</td></tr>
+<tr><td>LTH 净持仓变化</td><td>转为净增持</td><td>加速出货</td><td><strong>净出货中</strong></td><td>Glassnode</td></tr>
+</tbody></table></div>
+
+<hr>
+
+<h3>19.9 BTC 未来价格走势判断</h3>
+
+<p>基于前述全部数据（币安 K 线分析 + 宏观 + ETF + 链上 + 监管 + 地缘政治），对 BTC 未来不同时间维度的走势给出判断和依据:</p>
+
+<h4>短期（2026年2月 &mdash; 2026年5月）: 震荡磨底，偏弱运行</h4>
+<p><strong>判断</strong>: 大概率在 <strong>$65,000 &ndash; $85,000</strong> 区间宽幅震荡</p>
+<div class="table-wrap"><table>
+<thead><tr><th>依据</th><th>数据支撑</th></tr></thead>
+<tbody>
+<tr><td>趋势仍然向下</td><td>90天线性趋势 -$3,035/月，20周仅7涨12跌，价格位于 MA200（$103,956）下方 24.4%</td></tr>
+<tr><td>美联储不会很快降息</td><td>Warsh 鹰派提名，市场预期最早 6 月降息，摩根大通预测全年仅降息1次</td></tr>
+<tr><td>ETF 处于净流出状态</td><td>连续 3 个月流出累计 ~$60 亿，短期内缺乏催化剂逆转</td></tr>
+<tr><td>STH 套牢区构成阻力</td><td>$92K-$117K 密集成本区，任何反弹都面临解套抛压</td></tr>
+<tr><td>但存在超卖反弹机会</td><td>Mayer Multiple 0.756（P14），极度恐惧 16，历史上这一区间有 59% 概率在 6 个月后正收益</td></tr>
+</tbody></table></div>
+
+<h4>中期（2026年6月 &mdash; 2026年12月）: 寻底阶段，底部大概率出现</h4>
+<p><strong>判断</strong>: 概率加权底部 <strong>$58,000 &ndash; $68,000</strong>，预计在 <strong>2026年7-9月</strong> 形成</p>
+<div class="table-wrap"><table>
+<thead><tr><th>依据</th><th>数据支撑</th></tr></thead>
+<tbody>
+<tr><td>周期规律指向减半后第2年为熊市</td><td>2018 年(-72.3%)、2022 年(-65.3%) 均为深度熊市，2026 年处于同一周期位置</td></tr>
+<tr><td>峰后 ~376 天为历史底部时间点</td><td>周期3峰值 2021-11-10 后 376 天见底，映射到本轮为 <strong>2026年10月</strong></td></tr>
+<tr><td>回撤递减趋势</td><td>-84% &rarr; -77% &rarr; 预期 -48%~-55%（ATH $126,200 &times; 0.52 &asymp; $66,000）</td></tr>
+<tr><td>Hash Ribbon 投降信号接近成熟</td><td>历史上投降结束后 3-6 个月内价格大幅反弹（2024: $49K&rarr;$100K，2022: $15K&rarr;$69K）</td></tr>
+<tr><td>ETF 地板效应</td><td>$123B ETF AUM + 7% 流通量锁定 + Strategy 持续每周采购 &rarr; 纯周期模型底部上调 ~$6K</td></tr>
+<tr><td>稳定币干火药 $318B</td><td>一旦恐慌情绪见底，场外资金可迅速回流</td></tr>
+<tr><td>美联储可能在 H2 恢复降息</td><td>如通胀继续下行至接近 2%，6-9月可能开启新一轮降息</td></tr>
+</tbody></table></div>
+
+<h4>长期（2027年 &mdash; 2028年减半）: 复苏与新周期启动</h4>
+<p><strong>判断</strong>: 2027年下半年进入复苏阶段，<strong>2028年减半前回到 $95,000 &ndash; $140,000</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>依据</th><th>数据支撑</th></tr></thead>
+<tbody>
+<tr><td>Mayer &lt; 0.8 后 12 个月有 77% 正收益概率</td><td>历史平均收益 +89.4%，中位 +45.6%（基于币安全部数据统计）</td></tr>
+<tr><td>Power Law 模型显示当前低估</td><td>当前价格/公允价格 = 0.844，低估 15.6%；2028 年公允价格 ~$150K-$170K</td></tr>
+<tr><td>熊市恢复时间在缩短</td><td>2017-18 熊市: 恢复 ATH 用 732 天；2021-22 熊市: 用 476 天（-35%）</td></tr>
+<tr><td>第五次减半预计 2028 年 4 月</td><td>减半前 6-12 个月通常启动上涨（2019: +89.5%，2023: +154.5%）</td></tr>
+<tr><td>监管框架成熟</td><td>GENIUS Act 2027年1月生效，CLARITY Act 可能 2026 年通过，给行业提供法律确定性</td></tr>
+<tr><td>战略储备政策可能落地</td><td>BITCOIN Act 如通过，5年购买 100 万 BTC 将创造持续需求</td></tr>
+<tr><td>全球 M2 扩张传导</td><td>当前 +3-4% 增速将在 6-12 个月后支撑资产价格</td></tr>
+</tbody></table></div>
+
+<h4>价格走势判断汇总</h4>
+<pre><code>BTC 价格走势判断时间线（2026-02 → 2028-04）
+
+$140K ┃                                                    ╱╱╱
+$130K ┃                                                  ╱╱
+$120K ┃                                                ╱╱
+$110K ┃                                              ╱╱
+$100K ┃                                           ╱╱╱
+ $90K ┃                                        ╱╱╱
+ $80K ┃━━━╲╲                               ╱╱╱
+ $70K ┃     ╲╲╲                         ╱╱╱
+ $60K ┃        ╲╲━━━━━━━━━━━━━━━━━━╱╱╱
+ $50K ┃              (底部区间)
+      ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       26Q1  26Q2  26Q3  26Q4  27H1  27H2  28Q1  28减半
+         震荡偏弱    寻底      筑底    复苏    减半行情</code></pre>
+
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>预测价格区间</th><th>核心逻辑</th><th>置信度</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$65,000 - $85,000</td><td>震荡磨底，美联储鹰派压制</td><td><strong>中高</strong></td></tr>
+<tr><td>2026 Q3</td><td>$58,000 - $70,000</td><td>概率加权底部区间</td><td><strong>中</strong></td></tr>
+<tr><td>2026 Q4</td><td>$60,000 - $80,000</td><td>底部确认，开始筑底</td><td><strong>中</strong></td></tr>
+<tr><td>2027 H1</td><td>$70,000 - $95,000</td><td>复苏起步</td><td><strong>中低</strong></td></tr>
+<tr><td>2027 H2</td><td>$90,000 - $120,000</td><td>复苏加速，可能收复 ATH</td><td><strong>中低</strong></td></tr>
+<tr><td>2028 减半前</td><td>$95,000 - $140,000</td><td>减半预期推动</td><td><strong>低</strong>（时间跨度大，不确定性高）</td></tr>
+</tbody></table></div>
+
+<hr>
+
+<h3>19.10 总结论</h3>
+
+<p><strong>一句话结论</strong>: BTC 四年周期理论在第四周期中依然有效但正在演变&mdash;&mdash;峰值时间（535天）精准验证了周期节奏，而 ETF、战略储备等新变量正在使回撤幅度递减并改变市场微观结构。</p>
+
+<p><strong>对「BTC 后市怎么走」的回答</strong>:</p>
+
+<ol>
+<li><strong>当前是否已经见底?</strong> &mdash; <strong>大概率还没有</strong>。虽然 Mayer Multiple（0.756）和极度恐惧指数（16）显示市场已进入超卖区间，但历史上减半后第 2 年（2018、2022）都经历了深度调整，且当前 LTH 仍在大规模出货（30天卖出 $95 亿），ETF 资金连续 3 个月净流出。跌破整体已实现价格 $80,700 是一个明确的熊市确认信号</li>
+
+<li><strong>底部在哪里?</strong> &mdash; 概率加权底部 <strong>$58,000 - $68,000</strong>。纯周期模型给出 $52K-$62K，但考虑到 ETF 地板效应（$123B AUM + 7% 流通量锁定）、战略储备（198K BTC 永不出售）、企业持续采购（190家公司持有 5% 供应）和 $318B 稳定币干火药，底部向上修正约 $6,000</li>
+
+<li><strong>底部什么时候来?</strong> &mdash; 预计 <strong>2026年7-9月</strong>。基于三重证据:
+<ul>
+<li>周期3映射: 峰后 376 天见底 &rarr; 2026年10月</li>
+<li>回撤递减修正: 比周期3更快触底 &rarr; 2026年8月前后</li>
+<li>Hash Ribbon 投降: 通常投降结束后 2-4 个月见底 &rarr; 2026年Q2-Q3</li>
+</ul></li>
+
+<li><strong>之后还会涨吗?</strong> &mdash; <strong>会</strong>。每轮减半周期虽然涨幅递减（96x&rarr;30x&rarr;8x&rarr;2x），但都创出新高。Mayer &lt; 0.8 后 12 个月有 77% 的正收益概率，平均回报 +89%。Power Law 模型的 2028 年公允价格为 $150K-$170K。下一轮主升浪预计在 <strong>2027年下半年至2028年</strong> 由第五次减半催化</li>
+
+<li><strong>与纯周期预测的最大不同是什么?</strong> &mdash; <strong>结构性变量</strong>。ETF 既是托底力量（$123B AUM 锁定供给），也是新型风险（级联赎回负反馈循环）。战略储备和企业采购创造了周期底部的「买方支撑」，但美联储鹰派预期和高相关性风险（与纳斯达克 0.88）意味着宏观逆风可以迅速传导至 BTC。本轮周期的核心特征是: <strong>底部更浅但更复杂，涨幅更小但更可持续</strong></li>
+</ol>
+
+<hr>
+
+<h3>19.11 关于第 19 章数据来源的说明</h3>
+
+<blockquote>
+<p>第 19 章的数据<strong>不是通过本仓库脚本生成的</strong>。第 1-18 章的分析基于 <code>fetch_binance_data.py</code> 获取的币安 API 原始数据，由 <code>analyze_btc_cycle.py</code>、<code>generate_pro_charts.py</code>、<code>generate_forecast_charts.py</code> 三个脚本计算得出。</p>
+<p>第 19 章的数据来源于以下<strong>公开 API 和数据平台</strong>的手动研究与整理（每个子章节末尾均附有具体链接）:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>数据类别</th><th>主要来源</th><th>类型</th></tr></thead>
+<tbody>
+<tr><td>宏观经济</td><td><a href="https://fred.stlouisfed.org" target="_blank">FRED</a>、<a href="https://www.bls.gov" target="_blank">BLS</a>、<a href="https://home.treasury.gov" target="_blank">US Treasury</a>、<a href="https://tradingeconomics.com" target="_blank">Trading Economics</a></td><td>政府公开数据 / 第三方聚合</td></tr>
+<tr><td>ETF 资金流</td><td><a href="https://farside.co.uk/btc/" target="_blank">Farside Investors</a>、<a href="https://sosovalue.com" target="_blank">SoSoValue</a>、<a href="https://www.coinglass.com/bitcoin-etf" target="_blank">CoinGlass</a></td><td>ETF 追踪平台（免费公开）</td></tr>
+<tr><td>链上指标</td><td><a href="https://cryptoquant.com" target="_blank">CryptoQuant</a>、<a href="https://glassnode.com" target="_blank">Glassnode</a>、<a href="https://www.coinglass.com" target="_blank">CoinGlass</a></td><td>链上数据平台（部分需订阅）</td></tr>
+<tr><td>稳定币</td><td><a href="https://defillama.com/stablecoins" target="_blank">DefiLlama</a></td><td>DeFi 数据聚合（免费公开）</td></tr>
+<tr><td>市场情绪</td><td><a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank">Alternative.me Fear &amp; Greed</a>、<a href="https://coinmarketcap.com/charts/fear-and-greed-index/" target="_blank">CoinMarketCap</a></td><td>情绪指数（免费公开）</td></tr>
+<tr><td>监管政策</td><td><a href="https://www.whitehouse.gov" target="_blank">White House</a>、<a href="https://www.sec.gov" target="_blank">SEC</a>、新闻媒体</td><td>政府官网 / 行业媒体</td></tr>
+<tr><td>企业持仓</td><td><a href="https://www.strategy.com/purchases" target="_blank">Strategy.com</a>、<a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=13F" target="_blank">SEC 13F Filings</a></td><td>公司官网 / SEC 披露</td></tr>
+<tr><td>新闻事件</td><td><a href="https://coindesk.com" target="_blank">CoinDesk</a>、<a href="https://theblock.co" target="_blank">The Block</a>、<a href="https://cnbc.com" target="_blank">CNBC</a>、<a href="https://bloomberg.com" target="_blank">Bloomberg</a></td><td>行业 / 财经媒体</td></tr>
+</tbody></table></div>
+<p>所有数据引用均可通过对应链接验证。如需将第 19 章数据自动化获取，可开发额外的数据采集脚本接入上述 API。</p>
+</blockquote>
+
+<blockquote class="warning">
+<p><strong>免责声明</strong>: 本报告（包括第 1-18 章的周期数据分析和第 19 章的多维度市场分析）仅为基于公开数据的学术研究，不构成任何投资建议。所有预测均基于历史模式和当前数据的合理推演，不保证未来结果。加密货币市场存在极高风险，投资者应自行评估风险并做出独立判断。</p>
+</blockquote>
+
 </div>
 
 <hr>
