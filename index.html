@@ -133,12 +133,46 @@ blockquote p:last-child { margin-bottom: 0; }
   width: 100%; border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   margin: 16px 0 20px; display: block;
+  cursor: zoom-in; transition: box-shadow 0.2s;
+}
+.chart-img:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.14); }
+/* Lightbox */
+.lightbox-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
+  cursor: zoom-out; padding: 20px;
+}
+.lightbox-overlay.active { opacity: 1; visibility: visible; }
+.lightbox-overlay img {
+  max-width: 95vw; max-height: 90vh; border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  transform: scale(0.92); transition: transform 0.3s;
+  -webkit-user-select: none; user-select: none;
+}
+.lightbox-overlay.active img { transform: scale(1); }
+.lightbox-close {
+  position: absolute; top: 16px; right: 20px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); border: none; cursor: pointer;
+  color: #FFF; font-size: 24px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+.lightbox-caption {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,0.8); font-size: 13px; text-align: center;
+  max-width: 80vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 /* Tables */
-.table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid #E2E8F0; }
+.table-wrap {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px; border-radius: 8px; border: 1px solid #E2E8F0;
+}
 table {
   width: 100%; border-collapse: collapse;
-  font-size: 14px; white-space: nowrap;
+  font-size: 14px;
 }
 thead { position: sticky; top: 0; z-index: 2; }
 th {
@@ -179,20 +213,50 @@ hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
 .back-to-top:hover { background: #D97706; }
 /* Stars */
 .stars { color: #F59E0B; letter-spacing: 1px; }
+/* Mobile TOC toggle button */
+.toc-toggle {
+  display: none; width: 40px; height: 40px; border: none; cursor: pointer;
+  background: none; padding: 0; flex-shrink: 0;
+}
+.toc-toggle svg { display: block; }
+.sidebar-backdrop {
+  position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.4);
+  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
+}
+.sidebar-backdrop.active { opacity: 1; visibility: visible; }
 /* Responsive */
 @media (max-width: 1199px) {
-  .sidebar { display: none; }
+  .sidebar {
+    transform: translateX(-100%); transition: transform 0.3s;
+    z-index: 50; box-shadow: none;
+  }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.12); }
+  .toc-toggle { display: flex; align-items: center; justify-content: center; }
   .main-content { margin-left: 0; }
 }
 @media (max-width: 640px) {
   .content-wrap { padding: 0 16px 60px; }
-  .hero h1 { font-size: 26px; }
-  .hero { padding: 40px 0 28px; }
-  .section h2 { font-size: 20px; }
+  .hero h1 { font-size: 24px; }
+  .hero { padding: 36px 0 24px; }
+  .hero .subtitle { font-size: 14px; margin-bottom: 20px; }
+  .hero .report-time { font-size: 12px; padding: 6px 14px; }
+  .hero .meta-row { flex-direction: column; align-items: center; gap: 6px; font-size: 12px; }
+  .section h2 { font-size: 19px; padding-top: 24px; }
+  .section h3 { font-size: 16px; margin: 20px 0 10px; }
+  .section { padding-top: 32px; }
   table { font-size: 13px; }
-  th, td { padding: 7px 10px; }
-  .findings-grid { grid-template-columns: 1fr; }
-  .top-nav { padding: 0 14px; }
+  th, td { padding: 7px 10px; white-space: nowrap; }
+  .findings-grid { grid-template-columns: 1fr; gap: 10px; }
+  .finding-card { padding: 14px; }
+  .top-nav { padding: 0 12px; }
+  blockquote { padding: 12px 14px; }
+  pre { padding: 12px 14px; font-size: 12px; }
+  .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; font-size: 18px; }
+}
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
 }
 /* Print */
 @media print {
@@ -205,9 +269,13 @@ hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
 
 <!-- Top Nav -->
 <nav class="top-nav">
+  <button class="toc-toggle" id="tocToggle" aria-label="Toggle table of contents">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
   <div class="nav-title"><span>&#8383;</span> BTC 四年周期理论验证研究报告</div>
-  <a href="https://github.com" target="_blank" rel="noopener">Back to GitHub &rarr;</a>
+  <a href="https://github.com/riba2534/bitcoin-cycle-analysis" target="_blank" rel="noopener">GitHub &rarr;</a>
 </nav>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <!-- Sidebar TOC -->
 <aside class="sidebar" id="sidebar">
@@ -1216,6 +1284,13 @@ hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
 </div><!-- /content-wrap -->
 </div><!-- /main-content -->
 
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img src="" alt="">
+  <div class="lightbox-caption"></div>
+</div>
+
 <!-- Back to Top -->
 <button class="back-to-top" id="backToTop" aria-label="Back to top">&uarr;</button>
 
@@ -1242,6 +1317,37 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
 sections.forEach(sec => observer.observe(sec));
+
+// Lightbox for chart images
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox.querySelector('img');
+const lbCaption = lightbox.querySelector('.lightbox-caption');
+document.querySelectorAll('.chart-img').forEach(img => {
+  img.addEventListener('click', () => {
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCaption.textContent = img.alt;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+lightbox.addEventListener('click', (e) => { if (e.target !== lbImg) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+// Mobile TOC sidebar toggle
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebarBackdrop');
+const tocToggle = document.getElementById('tocToggle');
+function openSidebar() { sidebar.classList.add('open'); backdrop.classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('active'); document.body.style.overflow = ''; }
+tocToggle.addEventListener('click', () => { sidebar.classList.contains('open') ? closeSidebar() : openSidebar(); });
+backdrop.addEventListener('click', closeSidebar);
+// Close sidebar when TOC link clicked on mobile
+sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { if (window.innerWidth < 1200) closeSidebar(); }));
 
 // Live BTC Price from Binance public API
 (async function fetchBtcPrice() {
