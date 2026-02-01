@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTC 四年周期理论验证研究报告</title>
+<meta name="description" content="基于币安 BTCUSDT 交易对真实历史数据，对比特币四年周期理论进行系统性验证的研究报告。数据范围: 2017-08-17 ~ 2026-02-01。">
+<meta property="og:title" content="BTC 四年周期理论验证研究报告">
+<meta property="og:description" content="基于币安 BTCUSDT 3,091 个交易日的真实数据，系统验证比特币四年周期理论。涵盖减半周期对比、回撤分析、波动率、Power Law 模型及后市走势预测。">
+<meta property="og:image" content="charts/01_price_overview_halvings.png">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BTC 四年周期理论验证研究报告">
+<meta name="twitter:description" content="基于币安 BTCUSDT 3,091 个交易日的真实数据，系统验证比特币四年周期理论。">
+<meta name="twitter:image" content="charts/01_price_overview_halvings.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23F7931A'/%3E%3Cpath d='M46.1 27.4c.6-4.2-2.6-6.5-7-8l1.4-5.7-3.5-.9-1.4 5.5c-.9-.2-1.9-.4-2.8-.7l1.4-5.5-3.5-.9-1.4 5.7c-.8-.2-1.5-.3-2.2-.5l0 0-4.8-1.2-1 3.7s2.6.6 2.5.6c1.4.4 1.7 1.3 1.6 2l-1.6 6.6c.1 0 .2 0 .3.1l-.3-.1-2.3 9.1c-.2.4-.6 1.1-1.5.8 0 0-2.5-.6-2.5-.6l-1.7 4 4.5 1.1c.8.2 1.7.4 2.5.6l-1.5 5.8 3.5.9 1.4-5.7c1 .3 1.9.5 2.8.7l-1.4 5.7 3.5.9 1.5-5.8c5.8 1.1 10.2.7 12-4.6 1.5-4.2-.1-6.7-3.1-8.3 2.2-.5 3.9-2 4.3-5z M41 33.7c-1.1 4.2-8.2 1.9-10.5 1.4l1.9-7.5c2.3.6 9.7 1.7 8.6 6.1z M42 27.3c-1 3.8-6.9 1.9-8.8 1.4l1.7-6.8c1.9.5 8.2 1.4 7.1 5.4z' fill='%23FFF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #FAFAFA;
+  color: #0F172A;
+  line-height: 1.75;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+/* Top Nav */
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid #E2E8F0;
+  height: 52px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.top-nav .nav-title { font-weight: 700; font-size: 15px; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-nav .nav-title span { color: #F59E0B; }
+.top-nav a { color: #3B82F6; text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; margin-left: 16px; }
+.top-nav a:hover { text-decoration: underline; }
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 52px; left: 0; bottom: 0; width: 280px;
+  overflow-y: auto; padding: 24px 16px 40px;
+  background: #FFFFFF; border-right: 1px solid #E2E8F0;
+  z-index: 50;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }
+.sidebar h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #94A3B8; margin-bottom: 12px; font-weight: 600; }
+.sidebar ul { list-style: none; }
+.sidebar li { margin-bottom: 2px; }
+.sidebar a {
+  display: block; padding: 6px 12px; border-radius: 6px;
+  font-size: 13px; color: #475569; text-decoration: none;
+  line-height: 1.5; transition: all 0.15s;
+}
+.sidebar a:hover { background: #F1F5F9; color: #0F172A; }
+.sidebar a.active { background: #FEF3C7; color: #92400E; font-weight: 600; }
+/* Main Content */
+.main-content {
+  margin-left: 280px; padding: 52px 0 0;
+}
+.content-wrap {
+  max-width: 860px; margin: 0 auto; padding: 0 32px 80px;
+}
+/* Hero */
+.hero {
+  padding: 56px 0 40px; text-align: center;
+}
+.hero h1 { font-size: 36px; font-weight: 800; line-height: 1.2; color: #0F172A; margin-bottom: 12px; }
+.hero h1 span { color: #F59E0B; }
+.hero .subtitle { font-size: 16px; color: #64748B; margin-bottom: 32px; }
+.hero .meta-row {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px;
+  font-size: 13px; color: #64748B; margin-bottom: 36px;
+}
+.hero .meta-row strong { color: #0F172A; }
+.hero .meta-row .price { color: #F59E0B; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 15px; }
+.hero .report-time {
+  display: inline-block; background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 8px;
+  padding: 8px 20px; font-size: 13px; color: #92400E; margin-bottom: 20px; line-height: 1.6;
+}
+.live-badge {
+  display: inline-block; background: #22C55E; color: #FFF; font-size: 10px; font-weight: 700;
+  padding: 1px 6px; border-radius: 4px; letter-spacing: 0.05em; vertical-align: middle;
+  margin-left: 6px; animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.price-change { font-size: 12px; margin-left: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.price-change.up { color: #22C55E; }
+.price-change.down { color: #EF4444; }
+/* Key Findings Cards */
+.findings-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px; text-align: left;
+}
+.finding-card {
+  background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px;
+  padding: 20px; transition: box-shadow 0.2s;
+}
+.finding-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.finding-card .num { font-size: 12px; font-weight: 700; color: #F59E0B; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.finding-card .title { font-size: 15px; font-weight: 700; color: #0F172A; margin-bottom: 6px; line-height: 1.4; }
+.finding-card .desc { font-size: 13px; color: #64748B; line-height: 1.6; }
+/* Sections */
+.section { padding-top: 48px; }
+.section h2 {
+  font-size: 24px; font-weight: 700; line-height: 1.4;
+  border-top: 1px solid #E2E8F0; padding-top: 32px; margin-bottom: 24px;
+}
+.section h3 { font-size: 18px; font-weight: 600; margin: 28px 0 14px; line-height: 1.4; }
+.section h4 { font-size: 16px; font-weight: 600; margin: 20px 0 10px; line-height: 1.4; }
+p { margin-bottom: 16px; color: #334155; }
+strong { color: #0F172A; }
+a { color: #3B82F6; }
+/* Lists */
+ul, ol { margin-bottom: 16px; padding-left: 24px; }
+li { margin-bottom: 6px; color: #334155; }
+li strong { color: #0F172A; }
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid #F59E0B;
+  background: #FFFBEB; padding: 16px 20px;
+  border-radius: 0 8px 8px 0; margin-bottom: 20px;
+}
+blockquote p { color: #78350F; margin-bottom: 8px; }
+blockquote p:last-child { margin-bottom: 0; }
+/* Images */
+.chart-img {
+  width: 100%; border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  margin: 16px 0 20px; display: block;
+}
+/* Tables */
+.table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid #E2E8F0; }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 14px; white-space: nowrap;
+}
+thead { position: sticky; top: 0; z-index: 2; }
+th {
+  background: #F8FAFC; font-weight: 600; text-align: left;
+  padding: 10px 14px; border-bottom: 2px solid #E2E8F0; color: #0F172A;
+}
+td {
+  padding: 9px 14px; border-bottom: 1px solid #F1F5F9; color: #334155;
+}
+tbody tr:nth-child(even) td { background: #F8FAFC; }
+tbody tr:hover td { background: #EFF6FF; }
+/* Code */
+pre {
+  background: #F1F5F9; border-radius: 8px; padding: 16px 20px;
+  overflow-x: auto; margin-bottom: 20px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  line-height: 1.6; color: #334155;
+}
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #F1F5F9; padding: 2px 7px; border-radius: 4px;
+  font-size: 0.88em; color: #475569;
+}
+pre code { background: none; padding: 0; border-radius: 0; }
+/* Divider */
+hr { border: none; border-top: 1px solid #E2E8F0; margin: 40px 0; }
+/* Back to Top */
+.back-to-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #F59E0B; color: #FFF; border: none; cursor: pointer;
+  font-size: 20px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+  opacity: 0; transform: translateY(12px);
+  transition: all 0.25s; z-index: 90;
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); }
+.back-to-top:hover { background: #D97706; }
+/* Stars */
+.stars { color: #F59E0B; letter-spacing: 1px; }
+/* Responsive */
+@media (max-width: 1199px) {
+  .sidebar { display: none; }
+  .main-content { margin-left: 0; }
+}
+@media (max-width: 640px) {
+  .content-wrap { padding: 0 16px 60px; }
+  .hero h1 { font-size: 26px; }
+  .hero { padding: 40px 0 28px; }
+  .section h2 { font-size: 20px; }
+  table { font-size: 13px; }
+  th, td { padding: 7px 10px; }
+  .findings-grid { grid-template-columns: 1fr; }
+  .top-nav { padding: 0 14px; }
+}
+/* Print */
+@media print {
+  .sidebar, .top-nav, .back-to-top { display: none !important; }
+  .main-content { margin-left: 0; padding-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="top-nav">
+  <div class="nav-title"><span>&#8383;</span> BTC 四年周期理论验证研究报告</div>
+  <a href="https://github.com" target="_blank" rel="noopener">Back to GitHub &rarr;</a>
+</nav>
+
+<!-- Sidebar TOC -->
+<aside class="sidebar" id="sidebar">
+  <h3>Table of Contents</h3>
+  <ul>
+    <li><a href="#sec1" data-section="sec1">1. 研究概述</a></li>
+    <li><a href="#sec2" data-section="sec2">2. 四年周期理论基础</a></li>
+    <li><a href="#sec3" data-section="sec3">3. 全景数据分析</a></li>
+    <li><a href="#sec4" data-section="sec4">4. 减半周期对比验证</a></li>
+    <li><a href="#sec5" data-section="sec5">5. 回撤与熊市分析</a></li>
+    <li><a href="#sec6" data-section="sec6">6. 月度与季度收益规律</a></li>
+    <li><a href="#sec7" data-section="sec7">7. 成交量与市场情绪</a></li>
+    <li><a href="#sec8" data-section="sec8">8. 波动率周期分析</a></li>
+    <li><a href="#sec9" data-section="sec9">9. 8小时K线日内分析</a></li>
+    <li><a href="#sec10" data-section="sec10">10. 周K线趋势分析</a></li>
+    <li><a href="#sec11" data-section="sec11">11. 均线与 Mayer Multiple</a></li>
+    <li><a href="#sec12" data-section="sec12">12. Power Law 对数回归</a></li>
+    <li><a href="#sec13" data-section="sec13">13. 风险调整指标</a></li>
+    <li><a href="#sec14" data-section="sec14">14. 年度表现统计</a></li>
+    <li><a href="#sec15" data-section="sec15">15. 周期阶段划分</a></li>
+    <li><a href="#sec16" data-section="sec16">16. 未来预测模型</a></li>
+    <li><a href="#sec17" data-section="sec17">17. 后市走势深度分析</a></li>
+    <li><a href="#sec18" data-section="sec18">18. 总结与风险提示</a></li>
+    <li><a href="#appendix" data-section="appendix">附录</a></li>
+  </ul>
+</aside>
+
+<!-- Main -->
+<div class="main-content">
+<div class="content-wrap">
+
+<!-- Hero -->
+<div class="hero" id="hero">
+  <h1><span>&#8383;</span> BTC 四年周期理论验证研究报告</h1>
+  <p class="subtitle">Bitcoin Four-Year Cycle Theory Verification Research Report</p>
+  <div class="report-time">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    报告生成于 <strong>2026-02-01</strong>&nbsp;&nbsp;|&nbsp;&nbsp;数据截至 <strong>2026-02-01</strong>&nbsp;&nbsp;|&nbsp;&nbsp;报告中价格为生成时快照，仅供参考
+  </div>
+  <div class="meta-row">
+    <span><strong>数据来源:</strong> 币安 (Binance) BTCUSDT</span>
+    <span><strong>数据范围:</strong> 2017-08-17 ~ 2026-02-01</span>
+    <span><strong>交易日:</strong> 3,091 天</span>
+    <span><strong>当前 BTC:</strong> <span class="price" id="liveBtcPrice">加载中...</span> <span class="live-badge" id="liveBadge" style="display:none">LIVE</span></span>
+    <span><strong>历史最高 (ATH):</strong> <span class="price">$126,199.63</span></span>
+  </div>
+  <div class="findings-grid">
+    <div class="finding-card">
+      <div class="num">Finding #1</div>
+      <div class="title">峰值时间惊人一致</div>
+      <div class="desc">减半后到达峰值 527-546 天 (均值 536 天)，标准差仅 9.5 天。</div>
+    </div>
+    <div class="finding-card">
+      <div class="num">Finding #2</div>
+      <div class="title">涨幅倍数递减</div>
+      <div class="desc">96x &rarr; 30x &rarr; 8x &rarr; 2x，每周期衰减约 25-30%。</div>
+    </div>
+    <div class="finding-card">
+      <div class="num">Finding #3</div>
+      <div class="title">波动率长期下降</div>
+      <div class="desc">年化波动率从 110.6% (2017) 降至 41.7% (2025)，降幅超 60%。</div>
+    </div>
+    <div class="finding-card">
+      <div class="num">Finding #4</div>
+      <div class="title">熊市回撤递减</div>
+      <div class="desc">-84% &rarr; -77% &rarr; -37.7% (进行中)，市场走向成熟。</div>
+    </div>
+    <div class="finding-card">
+      <div class="num">Finding #5</div>
+      <div class="title">周期演变而非失效</div>
+      <div class="desc">振幅递减但频率稳定，ETF/机构正接管减半驱动力。</div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Section 1 -->
+<div class="section" id="sec1">
+<h2>1. 研究概述</h2>
+
+<h3>1.1 研究目的</h3>
+<p>本报告基于币安交易所 BTCUSDT 交易对的真实历史数据，对比特币"四年周期理论"进行系统性验证。通过多时间维度（日线、8小时线、周线、月线）的数据分析，结合减半事件、市场结构变化和宏观经济因素，评估该理论的有效性，并对未来走势提出基于数据的预测。</p>
+
+<h3>1.2 数据概览</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>数据总天数</td><td>3,091 天</td></tr>
+<tr><td>日K线数量</td><td>3,091 条</td></tr>
+<tr><td>8小时K线数量</td><td>9,269 条</td></tr>
+<tr><td>周K线数量</td><td>441 条</td></tr>
+<tr><td>月K线数量</td><td>102 条</td></tr>
+<tr><td>历史最高价 (ATH)</td><td><strong>$126,199.63</strong> (2025-10-06)</td></tr>
+<tr><td>历史最低价</td><td>$2,817.00 (2017-09-15)</td></tr>
+<tr><td>当前价格</td><td>$78,569.99</td></tr>
+<tr><td>整体涨幅 (首日&rarr;今)</td><td><strong>约 1,734%</strong></td></tr>
+</tbody></table></div>
+
+<h3>1.3 覆盖的减半周期</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>减半事件</th><th>日期</th><th>区块奖励变化</th><th>是否在数据范围内</th></tr></thead>
+<tbody>
+<tr><td>第一次减半</td><td>2012-11-28</td><td>50 &rarr; 25 BTC</td><td>否 (早于币安)</td></tr>
+<tr><td>第二次减半</td><td>2016-07-09</td><td>25 &rarr; 12.5 BTC</td><td>否 (早于币安)</td></tr>
+<tr><td>第三次减半</td><td>2020-05-11</td><td>12.5 &rarr; 6.25 BTC</td><td><strong>是</strong></td></tr>
+<tr><td>第四次减半</td><td>2024-04-19</td><td>6.25 &rarr; 3.125 BTC</td><td><strong>是</strong></td></tr>
+</tbody></table></div>
+
+<blockquote><p>注：币安 BTCUSDT 交易对自 2017-08-17 起开始交易，因此本报告主要覆盖第二次减半后期（2017-2020）、第三次减半周期（2020-2024）和第四次减半后的当前周期。</p></blockquote>
+</div>
+
+<hr>
+
+<!-- Section 2 -->
+<div class="section" id="sec2">
+<h2>2. 四年周期理论基础</h2>
+
+<h3>2.1 理论核心</h3>
+<p>比特币四年周期理论的核心逻辑：</p>
+<ol>
+<li><strong>供给冲击</strong>: 每 210,000 个区块（约4年），矿工区块奖励减半，新增 BTC 供应量骤降</li>
+<li><strong>需求不变/增长</strong>: 在需求至少持平的情况下，供给减少推动价格上涨</li>
+<li><strong>市场心理循环</strong>: 形成"积累 &rarr; 牛市 &rarr; 见顶 &rarr; 熊市"的四阶段循环</li>
+</ol>
+
+<h3>2.2 经典四年周期模型</h3>
+<pre><code>┌──────────────────────────────────────────────┐
+│    减半事件                                    │
+│       │                                       │
+│       ▼                                       │
+│   [积累期] ──→ [牛市上涨] ──→ [见顶分配]       │
+│   ~6-12月       ~12-18月       ~1-3月          │
+│       ▲              │                        │
+│       │              ▼                        │
+│   [底部筑底] ◄── [熊市下跌]                    │
+│   ~6-12月       ~12-14月                       │
+└──────────────────────────────────────────────┘
+          ← 约 4 年 (1,460 天) →</code></pre>
+
+<h3>2.3 历史周期概要（含公开已知数据）</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>周期</th><th>减半日</th><th>减半时价格</th><th>周期峰值</th><th>涨幅倍数</th><th>峰后最大回撤</th><th>到达峰值天数</th></tr></thead>
+<tbody>
+<tr><td>周期1</td><td>2012-11-28</td><td>~$12</td><td>~$1,150 (2013-12)</td><td><strong>~96x</strong></td><td>-85%</td><td>~365天</td></tr>
+<tr><td>周期2</td><td>2016-07-09</td><td>~$650</td><td>~$19,800 (2017-12)</td><td><strong>~30x</strong></td><td>-84%</td><td>~527天</td></tr>
+<tr><td>周期3</td><td>2020-05-11</td><td>~$8,600</td><td>~$69,000 (2021-11)</td><td><strong>~8x</strong></td><td>-77%</td><td>~546天</td></tr>
+<tr><td>周期4</td><td>2024-04-19</td><td>~$63,800</td><td>~$126,200 (2025-10)</td><td><strong>~2x</strong></td><td>-37%<em>(进行中)</em></td><td>~535天</td></tr>
+</tbody></table></div>
+
+<p><strong>关键发现</strong>: 峰值涨幅倍数呈明显递减趋势: 96x &rarr; 30x &rarr; 8x &rarr; 2x，每周期约衰减为上一周期的 25-30%。</p>
+</div>
+
+<hr>
+
+<!-- Section 3 -->
+<div class="section" id="sec3">
+<h2>3. 币安 BTCUSDT 全景数据分析</h2>
+
+<h3>3.1 价格走势全景图</h3>
+<img class="chart-img" src="charts/01_price_overview_halvings.png" alt="BTC价格走势全景图" loading="lazy">
+<p><strong>图表说明</strong>: 本图以对数坐标展示 2017-2026 年 BTCUSDT 完整价格走势，标注了第三次减半（2020-05-11）和第四次减半（2024-04-19）事件，以及各周期的峰值和底部位置。</p>
+<p><strong>关键观察</strong>:</p>
+<ol>
+<li><strong>2017-12-17 周期峰值</strong>: $19,798.68 &mdash; 第二次减半后约 527 天到达</li>
+<li><strong>2018-12 熊市底部</strong>: $3,156.26 &mdash; 从峰值回撤约 84%</li>
+<li><strong>2020-03-13 黑天鹅事件</strong>: COVID-19 导致"312暴跌"，价格一度跌至 $3,782</li>
+<li><strong>2021-11-10 周期峰值</strong>: $69,000 &mdash; 第三次减半后约 546 天到达</li>
+<li><strong>2022-11-21 熊市底部</strong>: $15,476 &mdash; 从峰值回撤约 77%（FTX 暴雷加速）</li>
+<li><strong>2024-03-14 历史新突破</strong>: $73,777 &mdash; <strong>首次在减半前突破上轮ATH</strong></li>
+<li><strong>2025-10-06 当前周期ATH</strong>: $126,199.63 &mdash; 第四次减半后约 535 天到达</li>
+</ol>
+
+<h3>3.2 核心价格统计</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>统计项</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>数据期间总涨幅</td><td>+1,734%</td></tr>
+<tr><td>年化复合收益率 (CAGR)</td><td><strong>41.03%</strong></td></tr>
+<tr><td>最大单日涨幅</td><td><strong>+22.50%</strong> (2017-12-07)</td></tr>
+<tr><td>最大单日跌幅</td><td><strong>-39.50%</strong> (2020-03-12, "312暴跌")</td></tr>
+<tr><td>全周期 Sharpe Ratio</td><td><strong>0.543</strong></td></tr>
+<tr><td>全周期 Sortino Ratio</td><td><strong>0.731</strong></td></tr>
+<tr><td>上涨月份占比</td><td><strong>52.5%</strong> (53/101)</td></tr>
+<tr><td>最佳月度收益</td><td>+60.8% (2019-05)</td></tr>
+<tr><td>最差月度收益</td><td>-37.3% (2022-06)</td></tr>
+</tbody></table></div>
+</div>
+
+<hr>
+
+<!-- Section 4 -->
+<div class="section" id="sec4">
+<h2>4. 减半周期对比验证</h2>
+
+<h3>4.1 减半后价格走势对齐对比</h3>
+<img class="chart-img" src="charts/02_cycle_comparison_from_halving.png" alt="减半后价格走势对比" loading="lazy">
+<p><strong>图表说明</strong>: 将各减半日设为 Day 0，价格归一化为 1.0，对比各周期减半后的价格走势。</p>
+<p><strong>数据验证结果</strong>:</p>
+
+<h4>第三次减半（2020-05-11, 基准: $8,600）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>里程碑</th><th>天数</th><th>价格</th><th>倍数</th></tr></thead>
+<tbody>
+<tr><td>减半日</td><td>Day 0</td><td>$8,600</td><td>1.0x</td></tr>
+<tr><td>+100天</td><td>Day 100</td><td>~$11,800</td><td>1.4x</td></tr>
+<tr><td>+200天</td><td>Day 200</td><td>~$35,000</td><td>4.1x</td></tr>
+<tr><td>+365天</td><td>Day 365</td><td>~$55,000</td><td>6.4x</td></tr>
+<tr><td>峰值 (Day 546)</td><td>Day 546</td><td>$69,000</td><td><strong>8.0x</strong></td></tr>
+<tr><td>+730天</td><td>Day 730</td><td>~$22,000</td><td>2.6x</td></tr>
+<tr><td>底部 (Day 924)</td><td>Day 924</td><td>$15,476</td><td>1.8x</td></tr>
+</tbody></table></div>
+
+<h4>第四次减半（2024-04-19, 基准: $63,818）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>里程碑</th><th>天数</th><th>价格</th><th>倍数</th></tr></thead>
+<tbody>
+<tr><td>减半日</td><td>Day 0</td><td>$63,818</td><td>1.0x</td></tr>
+<tr><td>+100天</td><td>Day 100</td><td>~$58,000</td><td>0.9x</td></tr>
+<tr><td>+200天</td><td>Day 200</td><td>~$98,000</td><td>1.5x</td></tr>
+<tr><td>+365天</td><td>Day 365</td><td>~$85,000</td><td>1.3x</td></tr>
+<tr><td>峰值 (Day 535)</td><td>Day 535</td><td>$126,200</td><td><strong>2.0x</strong></td></tr>
+<tr><td>+653天 (当前)</td><td>Day 653</td><td>$78,570</td><td>1.2x</td></tr>
+</tbody></table></div>
+
+<h3>4.2 周期峰值递减规律验证</h3>
+<pre><code>峰值倍数递减序列:
+  周期1: ~96x  ┃████████████████████████████████████████████████
+  周期2: ~30x  ┃███████████████
+  周期3: ~8.0x ┃████
+  周期4: ~2.0x ┃█</code></pre>
+<p><strong>递减比率</strong>: 96&rarr;30 (0.31x), 30&rarr;8 (0.27x), 8&rarr;2 (0.25x)</p>
+<p><strong>验证结论</strong>: 峰值倍数递减趋势<strong>高度一致</strong>，每周期衰减为前一周期的 25-31%。这与比特币市值增长、减半供给冲击递减以及市场成熟化高度吻合。</p>
+
+<h3>4.3 到达峰值时间对比</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>周期</th><th>减半至峰值天数</th><th>相对一致性</th></tr></thead>
+<tbody>
+<tr><td>周期2</td><td>527 天</td><td>-</td></tr>
+<tr><td>周期3</td><td>546 天</td><td>+19天 (+3.6%)</td></tr>
+<tr><td>周期4</td><td>535 天</td><td>-11天 (-2.0%)</td></tr>
+<tr><td><strong>平均</strong></td><td><strong>536 天</strong></td><td>标准差仅 9.5天</td></tr>
+</tbody></table></div>
+
+<p><strong>验证结论</strong>: 减半后到达峰值的时间窗口<strong>惊人地一致</strong>，均在 <strong>527-546 天</strong>（约 17-18 个月）之间，标准差不到 10 天。这是四年周期理论最有力的数据支撑之一。</p>
+</div>
+
+<hr>
+
+<!-- Section 5 -->
+<div class="section" id="sec5">
+<h2>5. 回撤与熊市分析</h2>
+
+<h3>5.1 历史回撤全景</h3>
+<img class="chart-img" src="charts/03_drawdown_analysis.png" alt="历史回撤分析" loading="lazy">
+<p><strong>图表说明</strong>: 上半部分展示价格与历史最高价(ATH)的关系，下半部分展示从ATH的回撤百分比。</p>
+
+<h3>5.2 主要回撤事件</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>事件</th><th>时间</th><th>最大回撤</th><th>持续时间</th><th>触发因素</th></tr></thead>
+<tbody>
+<tr><td>2018 熊市</td><td>2017-12 &rarr; 2018-12</td><td><strong>-84.1%</strong></td><td>~365天</td><td>ICO泡沫破裂</td></tr>
+<tr><td>2020.3 暴跌</td><td>2020-02 &rarr; 2020-03</td><td><strong>-54.3%</strong></td><td>~30天</td><td>COVID-19黑天鹅</td></tr>
+<tr><td>2021 中期调整</td><td>2021-04 &rarr; 2021-07</td><td><strong>-54.1%</strong></td><td>~90天</td><td>中国挖矿禁令</td></tr>
+<tr><td>2022 熊市</td><td>2021-11 &rarr; 2022-11</td><td><strong>-77.5%</strong></td><td>~375天</td><td>加息+LUNA/FTX崩盘</td></tr>
+<tr><td>2025 调整</td><td>2025-10 &rarr; 2026-02</td><td><strong>-37.7%</strong></td><td>进行中</td><td>宏观不确定性</td></tr>
+</tbody></table></div>
+
+<h3>5.3 熊市回撤递减趋势</h3>
+<pre><code>周期内最大回撤:
+  2018 熊市: -84.1% ┃████████████████████████████████████████████
+  2022 熊市: -77.5% ┃███████████████████████████████████████
+  当前回撤:  -37.7% ┃███████████████████</code></pre>
+<p><strong>验证结论</strong>: 熊市回撤幅度呈递减趋势（-84% &rarr; -77% &rarr; -37.7%*），但当前周期仍在进行中。如果当前调整的确是本周期的主要熊市阶段，那么回撤幅度的递减将是一个显著的结构性变化，表明市场正在走向成熟。</p>
+</div>
+
+<hr>
+
+<!-- Section 6 -->
+<div class="section" id="sec6">
+<h2>6. 月度与季度收益规律</h2>
+
+<h3>6.1 月度收益率热力图</h3>
+<img class="chart-img" src="charts/04_monthly_returns_heatmap.png" alt="月度收益率热力图" loading="lazy">
+<p><strong>图表说明</strong>: 展示 2017-2026 年每月收益率，绿色表示正收益，红色表示负收益。紫色标注的年份为减半年。</p>
+
+<h3>6.2 月度收益率模式</h3>
+<p>基于 101 个月度数据的统计：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>正收益月份</td><td>53个 (52.5%)</td></tr>
+<tr><td>负收益月份</td><td>48个 (47.5%)</td></tr>
+<tr><td>月均收益率</td><td>~+4.2%</td></tr>
+<tr><td>月度中位收益率</td><td>~+1.5%</td></tr>
+<tr><td>最佳月份</td><td>2019年5月 (+60.8%)</td></tr>
+<tr><td>最差月份</td><td>2022年6月 (-37.3%)</td></tr>
+</tbody></table></div>
+
+<h3>6.3 季节性规律</h3>
+<p>基于数据观察到的季节性模式：</p>
+<ul>
+<li><strong>Q1 (1-3月)</strong>: 表现分化，2018/2022 年深度下跌，但 2023/2024 年强劲上涨（+23%/+43.6%的2月）</li>
+<li><strong>Q2 (4-6月)</strong>: 减半通常发生在此季度，减半年表现平稳，非减半年波动较大。6月倾向于负收益（2022年-37.3%为历史最差月）</li>
+<li><strong>Q3 (7-9月)</strong>: 历史上为调整修复期，表现中性偏弱。2021年7月(+18.3%)为牛市中期反弹典型，但2019年9月(-13.5%)、2021年9月(-7.0%)显示该季度常为获利回吐窗口</li>
+<li><strong>Q4 (10-12月)</strong>: 历史上经常出现年末行情，2017、2020、2024年均在Q4大幅上涨。10月是最强月之一（"Uptober"效应）</li>
+<li><strong>11月效应</strong>: 2017-11(+52.2%)、2020-11(+42.8%)、2024-11(+37.2%) 均为强劲月份，与减半后的牛市高潮吻合</li>
+</ul>
+</div>
+
+<hr>
+
+<!-- Section 7 -->
+<div class="section" id="sec7">
+<h2>7. 成交量与市场情绪</h2>
+
+<h3>7.1 成交量趋势</h3>
+<img class="chart-img" src="charts/05_volume_analysis.png" alt="成交量分析" loading="lazy">
+<p><strong>图表说明</strong>: 上图为价格走势，下图为日成交量（USDT计价，单位十亿），蓝线为30日均成交量。</p>
+
+<h3>7.2 成交量关键发现</h3>
+<ol>
+<li><strong>牛市放量</strong>: 2021 年和 2024 年末的牛市阶段，日均成交量显著放大，30日均量达到最高水平</li>
+<li><strong>熊市缩量</strong>: 2022 年中期至 2023 年初，成交量持续萎缩，市场交投清淡</li>
+<li><strong>减半效应</strong>: 减半事件前后通常伴随成交量小幅放大，反映市场关注度提升</li>
+<li><strong>当前状态</strong>: 2025年后成交量从高位回落，与价格调整同步，显示市场处于观望状态</li>
+</ol>
+
+<h3>7.3 量价关系周期</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>周期阶段</th><th>量价关系</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td>底部积累</td><td>低量低价</td><td>市场冷清，仅剩长期持有者</td></tr>
+<tr><td>牛市初期</td><td>量增价升</td><td>聪明资金入场</td></tr>
+<tr><td>牛市主升</td><td>量价齐升</td><td>FOMO情绪推动</td></tr>
+<tr><td>见顶分配</td><td>天量滞涨</td><td>大户分发筹码</td></tr>
+<tr><td>熊市初期</td><td>量缩价跌</td><td>套牢盘惜售</td></tr>
+<tr><td>恐慌抛售</td><td>放量暴跌</td><td>投降式抛售</td></tr>
+</tbody></table></div>
+</div>
+
+<hr>
+
+<!-- Section 8 -->
+<div class="section" id="sec8">
+<h2>8. 波动率周期分析</h2>
+
+<h3>8.1 波动率趋势</h3>
+<img class="chart-img" src="charts/06_volatility_cycle.png" alt="波动率周期分析" loading="lazy">
+<p><strong>图表说明</strong>: 上图展示30日、90日、365日年化波动率趋势；下图为年度收益率箱线图，紫色为减半年。</p>
+
+<h3>8.2 波动率递减趋势</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>年份</th><th>年化波动率</th><th>所处周期</th></tr></thead>
+<tbody>
+<tr><td>2017</td><td>110.6%</td><td>周期2峰值年</td></tr>
+<tr><td>2018</td><td>83.1%</td><td>熊市</td></tr>
+<tr><td>2019</td><td>68.7%</td><td>复苏期</td></tr>
+<tr><td>2020</td><td>75.6%</td><td><strong>减半年</strong></td></tr>
+<tr><td>2021</td><td>81.2%</td><td>周期3峰值年</td></tr>
+<tr><td>2022</td><td>63.7%</td><td>熊市</td></tr>
+<tr><td>2023</td><td>44.1%</td><td>复苏期</td></tr>
+<tr><td>2024</td><td>53.0%</td><td><strong>减半年</strong></td></tr>
+<tr><td>2025</td><td>41.7%</td><td>周期4峰值年</td></tr>
+<tr><td>2026</td><td>42.3%</td><td>当前（数据不完整）</td></tr>
+</tbody></table></div>
+
+<p><strong>验证结论</strong>:</p>
+<ol>
+<li><strong>长期波动率下降趋势明显</strong>: 从 2017 年的 110% 降至 2025 年的 42%，降幅超过 60%</li>
+<li><strong>减半年波动率相对较高</strong>: 2020 年和 2024 年的波动率都高于前一年</li>
+<li><strong>牛市峰值年波动率递减</strong>: 2017 (110%) &rarr; 2021 (81%) &rarr; 2025 (42%)，反映市场成熟化</li>
+<li>波动率递减与峰值倍数递减高度一致，共同指向比特币市场的"去散户化"趋势</li>
+</ol>
+</div>
+
+<hr>
+
+<!-- Section 9 -->
+<div class="section" id="sec9">
+<h2>9. 8小时K线日内周期分析</h2>
+
+<h3>9.1 日内时段分析</h3>
+<img class="chart-img" src="charts/07_8h_kline_analysis.png" alt="8小时K线分析" loading="lazy">
+<p><strong>图表说明</strong>: 基于 9,269 条8小时K线数据，分析三个交易时段（00:00 UTC、08:00 UTC、16:00 UTC）的收益率、波动率和成交量特征。</p>
+
+<h3>9.2 时段特征对比</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>时段 (UTC)</th><th>对应市场</th><th>平均收益率</th><th>平均波动幅度</th><th>成交额占比</th></tr></thead>
+<tbody>
+<tr><td>00:00-08:00</td><td>亚洲</td><td><strong>-0.011%</strong></td><td>2.61%</td><td><strong>28.28%</strong></td></tr>
+<tr><td>08:00-16:00</td><td>欧洲</td><td><strong>+0.062%</strong></td><td>3.01%</td><td><strong>38.43%</strong></td></tr>
+<tr><td>16:00-00:00</td><td>美洲</td><td><strong>+0.106%</strong></td><td>2.93%</td><td><strong>33.29%</strong></td></tr>
+</tbody></table></div>
+
+<p><strong>关键发现</strong>:</p>
+<ol>
+<li><strong>欧洲时段(08:00-16:00 UTC)贡献最高成交额占比(38.4%)</strong>，而非美洲时段。这反映了欧洲时段横跨亚洲尾盘和美洲早盘，是全球流动性最集中的窗口</li>
+<li><strong>美洲时段平均收益率最高(+0.106%)</strong>，但亚洲时段为唯一负收益时段(-0.011%)，说明亚洲散户倾向于跟随前日美盘的追涨追跌</li>
+<li><strong>欧洲时段波动幅度最大(3.01%)</strong>，体现出跨时区交接时的价格发现功能</li>
+</ol>
+</div>
+
+<hr>
+
+<!-- Section 10 -->
+<div class="section" id="sec10">
+<h2>10. 周K线趋势分析</h2>
+
+<h3>10.1 周度收益与趋势</h3>
+<img class="chart-img" src="charts/08_weekly_analysis.png" alt="周K线分析" loading="lazy">
+<p><strong>图表说明</strong>: 上图为周收益率与12周移动平均线；下图为连续涨/跌周数统计。</p>
+
+<h3>10.2 周线趋势发现</h3>
+<ol>
+<li><strong>牛市连续性</strong>: 在主要上涨趋势中，BTC 经常出现连续 5-8 周上涨</li>
+<li><strong>熊市连续性</strong>: 主要下跌中，连续 4-6 周下跌并不罕见</li>
+<li><strong>减半后效应</strong>: 减半后的 12 周均线通常在 3-6 个月后持续转正</li>
+<li><strong>当前状态</strong>: 最近数周的12周均线正在走弱，与价格调整一致</li>
+</ol>
+</div>
+
+<hr>
+
+<!-- Section 11 -->
+<div class="section" id="sec11">
+<h2>11. 关键均线系统与 Mayer Multiple</h2>
+
+<h3>11.1 均线周期分析</h3>
+<img class="chart-img" src="charts/09_moving_averages.png" alt="均线系统" loading="lazy">
+<p><strong>图表说明</strong>: 展示 MA50、MA100、MA200、MA365、MA730（2年）等关键均线与价格的关系。</p>
+
+<h3>11.2 均线信号与周期</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>均线事件</th><th>含义</th><th>历史准确性</th></tr></thead>
+<tbody>
+<tr><td>价格站上 MA200</td><td>中期趋势转牛</td><td>高</td></tr>
+<tr><td>MA50 金叉 MA200</td><td>"黄金交叉"，牛市确认</td><td>中高</td></tr>
+<tr><td>价格跌破 MA365</td><td>进入深度调整/熊市</td><td>高</td></tr>
+<tr><td>价格站上 MA730</td><td>长期趋势健康</td><td>高</td></tr>
+</tbody></table></div>
+
+<p><strong>当前关键信号</strong>: 价格 $78,570 <strong>已跌破 MA200</strong> ($103,956)，历史上价格在 MA200 上方的时间占比仅 51.6%，跌破 MA200 通常意味着中期趋势转弱。</p>
+
+<h3>11.3 Mayer Multiple 估值分析</h3>
+<img class="chart-img" src="charts/13_mayer_multiple.png" alt="Mayer Multiple" loading="lazy">
+<p><strong>Mayer Multiple</strong> = 当前价格 / 200日移动平均价，是 Trace Mayer 提出的经典 BTC 估值工具。</p>
+<p><strong>当前状态</strong>: Mayer Multiple = <strong>0.756</strong>，处于历史 <strong>P14 分位</strong>（仅 14% 的历史交易日比当前更低）。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>分位数</th><th>Mayer Multiple</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td>P5</td><td>0.644</td><td>极度超卖</td></tr>
+<tr><td>P10</td><td>0.720</td><td>深度超卖</td></tr>
+<tr><td><strong>P14 (当前)</strong></td><td><strong>0.756</strong></td><td><strong>超卖</strong></td></tr>
+<tr><td>P25</td><td>0.848</td><td>低估区间</td></tr>
+<tr><td>P50 (中位数)</td><td>1.060</td><td>均衡</td></tr>
+<tr><td>P75</td><td>1.267</td><td>偏高估</td></tr>
+<tr><td>P90</td><td>1.541</td><td>过热预警</td></tr>
+<tr><td>P95</td><td>1.861</td><td>严重过热</td></tr>
+<tr><td>历史最高</td><td>2.820 (2021-01-08)</td><td>极端泡沫</td></tr>
+</tbody></table></div>
+
+<p><strong>与周期的关系</strong>:</p>
+<ul>
+<li>Mayer &gt; 2.4 时出现在每轮牛市顶部附近（红色区域），是<strong>强力卖出信号</strong></li>
+<li>Mayer &lt; 0.7 时出现在每轮熊市底部附近（绿色区域），是<strong>强力买入信号</strong></li>
+<li>当前 0.756 已接近 0.7 超卖线，历史上这一水平6个月后平均收益为正</li>
+</ul>
+</div>
+
+<hr>
+
+<!-- Section 12 -->
+<div class="section" id="sec12">
+<h2>12. Power Law 对数回归分析</h2>
+
+<h3>12.1 Power Law 模型</h3>
+<img class="chart-img" src="charts/14_power_law_regression.png" alt="Power Law 对数回归" loading="lazy">
+<p><strong>Power Law 模型</strong>是近年来华尔街最关注的 BTC 长期估值框架。模型假设 BTC 价格与自创世区块以来的天数之间存在幂律关系：</p>
+<pre><code>Price = 10^(-12.46) &times; Days^4.59</code></pre>
+<p>其中 Days 为自 2009-01-03（创世区块）以来的天数。</p>
+
+<h3>12.2 Power Law 当前估值</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>数值</th></tr></thead>
+<tbody>
+<tr><td>Power Law 公允价格</td><td><strong>$93,112</strong></td></tr>
+<tr><td>当前价格</td><td>$78,570</td></tr>
+<tr><td>当前价格/公允价格</td><td><strong>0.844</strong> (低估 15.6%)</td></tr>
+<tr><td>+1.5&sigma; 上轨</td><td>牛市极端超买区</td></tr>
+<tr><td>-1.5&sigma; 下轨</td><td>熊市极端超卖区</td></tr>
+</tbody></table></div>
+
+<p><strong>关键观察</strong>:</p>
+<ul>
+<li>当前价格在 Power Law 中轴<strong>下方</strong>，处于偏低估区间</li>
+<li>历史上每轮牛市峰值都触及 +1.5&sigma; ~ +2.5&sigma; 上轨</li>
+<li>历史上每轮熊市底部都触及 -1.5&sigma; ~ -2.5&sigma; 下轨</li>
+<li>该模型的 R&sup2; 较高，但需注意样本量有限（仅 ~3 个完整周期），统计显著性存疑</li>
+</ul>
+
+<h3>12.3 Power Law 对下一周期的预测</h3>
+<p>预计 2028 年第五次减半时：</p>
+<ul>
+<li>Power Law 公允价格: ~$150,000-$170,000</li>
+<li>+1.5&sigma; 上轨 (潜在峰值区): ~$300,000-$500,000</li>
+</ul>
+<blockquote><p>注: Power Law 对长期趋势的拟合较好，但对短期价格没有预测力。</p></blockquote>
+</div>
+
+<hr>
+
+<!-- Section 13 -->
+<div class="section" id="sec13">
+<h2>13. 风险调整指标</h2>
+
+<h3>13.1 专业风险仪表盘</h3>
+<img class="chart-img" src="charts/15_risk_metrics_dashboard.png" alt="风险指标仪表盘" loading="lazy">
+<p><strong>图表说明</strong>: 上图为 90 日滚动 Sharpe Ratio；中图为 90 日滚动最大回撤；下图为距上一次 ATH 的天数（水下时间）。</p>
+
+<h3>13.2 分周期风险收益对比</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>周期</th><th>时间范围</th><th>年化收益</th><th>年化波动率</th><th>Sharpe Ratio</th><th>Sortino Ratio</th></tr></thead>
+<tbody>
+<tr><td>周期2后半</td><td>2017-08 ~ 2020-05</td><td>+28.8%</td><td>85.7%</td><td>0.290</td><td>0.376</td></tr>
+<tr><td>周期3</td><td>2020-05 ~ 2024-04</td><td><strong>+66.5%</strong></td><td>63.1%</td><td><strong>0.991</strong></td><td><strong>1.400</strong></td></tr>
+<tr><td>周期4(至今)</td><td>2024-04 ~ 2026-02</td><td>+12.3%</td><td>45.0%</td><td>0.185</td><td>0.289</td></tr>
+<tr><td><strong>全周期</strong></td><td>2017-08 ~ 2026-02</td><td><strong>+41.0%</strong></td><td>68.2%</td><td><strong>0.543</strong></td><td><strong>0.731</strong></td></tr>
+</tbody></table></div>
+
+<p><strong>关键发现</strong>:</p>
+<ol>
+<li><strong>周期3的风险调整收益最佳</strong> (Sharpe=0.991)，得益于强劲的减半后上涨和相对可控的波动</li>
+<li><strong>当前周期4的 Sharpe 仅 0.185</strong>，显著弱于前两个周期，反映出涨幅递减对投资效率的负面影响</li>
+<li>Sortino &gt; Sharpe 表明上行波动贡献大于下行波动，这是正偏态资产的典型特征</li>
+</ol>
+
+<h3>13.3 回撤恢复时间分析</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>熊市周期</th><th>峰至谷时间</th><th>谷至恢复ATH时间</th><th>总水下时间</th></tr></thead>
+<tbody>
+<tr><td>2017-18 熊市</td><td>363 天</td><td><strong>732 天</strong></td><td>1,095 天 (~3年)</td></tr>
+<tr><td>2021-22 熊市</td><td>376 天</td><td><strong>476 天</strong></td><td>852 天 (~2.3年)</td></tr>
+<tr><td>当前调整</td><td>118 天<em>(进行中)</em></td><td>&mdash;</td><td>&mdash;</td></tr>
+</tbody></table></div>
+
+<p><strong>趋势</strong>: 恢复时间在缩短（732天 &rarr; 476天），这与市场成熟化和机构资本入场速度加快一致。如果这一趋势延续，当前周期的恢复时间可能进一步缩短。</p>
+</div>
+
+<hr>
+
+<!-- Section 14 -->
+<div class="section" id="sec14">
+<h2>14. 年度表现统计</h2>
+
+<h3>14.1 年度综合表现</h3>
+<img class="chart-img" src="charts/11_yearly_performance.png" alt="年度表现" loading="lazy">
+
+<h3>14.2 年度数据汇总</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>年份</th><th>开盘价</th><th>收盘价</th><th>最高价</th><th>最低价</th><th>年收益率</th><th>最大回撤</th><th>年化波动率</th></tr></thead>
+<tbody>
+<tr><td>2017*</td><td>$4,285</td><td>$13,716</td><td>$19,799</td><td>$2,817</td><td><strong>+220.1%</strong></td><td>-37.2%</td><td>110.6%</td></tr>
+<tr><td>2018</td><td>$13,380</td><td>$3,703</td><td>$17,176</td><td>$3,156</td><td><strong>-72.3%</strong></td><td>-81.3%</td><td>83.1%</td></tr>
+<tr><td>2019</td><td>$3,797</td><td>$7,195</td><td>$13,970</td><td>$3,350</td><td><strong>+89.5%</strong></td><td>-52.6%</td><td>68.7%</td></tr>
+<tr><td>2020</td><td>$7,201</td><td>$28,924</td><td>$29,300</td><td>$3,782</td><td><strong>+301.7%</strong></td><td>-54.3%</td><td>75.6%</td></tr>
+<tr><td>2021</td><td>$29,332</td><td>$46,217</td><td>$69,000</td><td>$28,130</td><td><strong>+57.6%</strong></td><td>-54.1%</td><td>81.2%</td></tr>
+<tr><td>2022</td><td>$47,723</td><td>$16,542</td><td>$48,190</td><td>$15,476</td><td><strong>-65.3%</strong></td><td>-67.3%</td><td>63.7%</td></tr>
+<tr><td>2023</td><td>$16,617</td><td>$42,284</td><td>$44,700</td><td>$16,499</td><td><strong>+154.5%</strong></td><td>-20.9%</td><td>44.1%</td></tr>
+<tr><td>2024</td><td>$44,180</td><td>$93,576</td><td>$108,353</td><td>$38,555</td><td><strong>+111.8%</strong></td><td>-26.9%</td><td>53.0%</td></tr>
+<tr><td>2025</td><td>$94,592</td><td>$87,648</td><td>$126,200</td><td>$74,508</td><td><strong>-7.3%</strong></td><td>-32.9%</td><td>41.7%</td></tr>
+<tr><td>2026*</td><td>$88,839</td><td>$78,570</td><td>$97,924</td><td>$75,720</td><td><strong>-11.6%</strong></td><td>-19.8%</td><td>42.3%</td></tr>
+</tbody></table></div>
+
+<blockquote><p>*2017年仅含8月后数据，2026年仅含1月数据</p></blockquote>
+
+<h3>14.3 年度表现与周期的关系</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>周期位置</th><th>年份</th><th>年度收益</th><th>模式</th></tr></thead>
+<tbody>
+<tr><td>减半前1年</td><td>2019, 2023</td><td>+89.5%, +154.5%</td><td><strong>强劲复苏</strong></td></tr>
+<tr><td>减半年</td><td>2020, 2024</td><td>+301.7%, +111.8%</td><td><strong>大幅上涨</strong></td></tr>
+<tr><td>减半后1年</td><td>2021, 2025</td><td>+57.6%, -7.3%</td><td><strong>放缓/见顶</strong></td></tr>
+<tr><td>减半后2年</td><td>2018*, 2022</td><td>-72.3%, -65.3%</td><td><strong>深度熊市</strong></td></tr>
+</tbody></table></div>
+
+<p><strong>验证结论</strong>:</p>
+<ul>
+<li><strong>减半前1年和减半年</strong> 是最具确定性的上涨阶段</li>
+<li><strong>减半后2年</strong> 几乎确定为熊市</li>
+<li><strong>减半后1年</strong> 结果分化：2021年仍有57%收益，但2025年已转负，说明峰值时间在前移</li>
+</ul>
+</div>
+
+<hr>
+
+<!-- Section 15 -->
+<div class="section" id="sec15">
+<h2>15. 周期阶段划分</h2>
+
+<h3>15.1 四阶段模型验证</h3>
+<img class="chart-img" src="charts/12_cycle_phase_analysis.png" alt="周期阶段分析" loading="lazy">
+<p><strong>图表说明</strong>: 用不同颜色标注各周期阶段：绿色=上涨，橙色=盘整/分配，红色=下跌，蓝色=底部积累，紫色=减半事件。</p>
+
+<h3>15.2 第三周期 (2020减半) 阶段详解</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>阶段</th><th>时间范围</th><th>持续天数</th><th>价格变化</th></tr></thead>
+<tbody>
+<tr><td>牛市启动</td><td>2020-05 &rarr; 2021-04</td><td>~337天</td><td>$8,600 &rarr; $64,800 (+654%)</td></tr>
+<tr><td>中期调整</td><td>2021-04 &rarr; 2021-07</td><td>~97天</td><td>$64,800 &rarr; $29,300 (-55%)</td></tr>
+<tr><td>二次冲顶</td><td>2021-07 &rarr; 2021-11</td><td>~113天</td><td>$29,300 &rarr; $69,000 (+135%)</td></tr>
+<tr><td>熊市下跌</td><td>2021-11 &rarr; 2022-11</td><td>~376天</td><td>$69,000 &rarr; $15,476 (-78%)</td></tr>
+<tr><td>底部积累</td><td>2022-11 &rarr; 2023-01</td><td>~53天</td><td>$15,476 &rarr; $23,000 (+49%)</td></tr>
+<tr><td>复苏上涨</td><td>2023-01 &rarr; 2024-03</td><td>~426天</td><td>$23,000 &rarr; $73,777 (+221%)</td></tr>
+</tbody></table></div>
+<p><strong>周期总长</strong>: 减半 &rarr; 下一周期前ATH突破 &asymp; 1,403 天（约 3.84 年）</p>
+
+<h3>15.3 第四周期 (2024减半) 当前进展</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>阶段</th><th>时间范围</th><th>持续天数</th><th>价格变化</th></tr></thead>
+<tbody>
+<tr><td>减半后震荡</td><td>2024-04 &rarr; 2024-10</td><td>~174天</td><td>$63,800 &rarr; $59,000 (-8%)</td></tr>
+<tr><td>ETF驱动上涨</td><td>2024-10 &rarr; 2025-10</td><td>~365天</td><td>$59,000 &rarr; $126,200 (+114%)</td></tr>
+<tr><td>当前调整</td><td>2025-10 &rarr; 至今</td><td>~118天</td><td>$126,200 &rarr; $78,570 (-37.7%)</td></tr>
+</tbody></table></div>
+
+<p><strong>当前位置</strong>: 第四次减半后第 <strong>653 天</strong>。如果遵循历史模式（峰值在~536天），<strong>本周期已过峰值</strong>，但需注意：</p>
+<ul>
+<li>本周期首次出现减半前突破ATH的特殊现象</li>
+<li>机构/ETF参与度远超前几轮周期</li>
+<li>峰值倍数（2.0x）符合递减趋势预期</li>
+</ul>
+</div>
+
+<hr>
+
+<!-- Section 16 -->
+<div class="section" id="sec16">
+<h2>16. 未来预测模型</h2>
+
+<h3>16.1 基于四年周期的预测</h3>
+<img class="chart-img" src="charts/10_prediction_model.png" alt="价格预测模型" loading="lazy">
+<p><strong>图表说明</strong>: 基于历史周期模式，构建三种预测情景。阴影区域为预测区间。</p>
+
+<h3>16.2 预测方法论</h3>
+<p>预测基于以下历史规律：</p>
+<ol>
+<li><strong>峰值时间</strong>: 减半后平均 536 天（标准差 9.5 天）</li>
+<li><strong>峰值倍数递减</strong>: 每周期约为上轮的 25-30%</li>
+<li><strong>熊市回撤递减</strong>: 从 -84% 到 -77%，趋势性减小</li>
+<li><strong>周期后半段</strong>: 峰值后进入 12-14 个月的下降周期</li>
+</ol>
+
+<h3>16.3 三种情景分析</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>情景</th><th>假设</th><th>预测峰值</th><th>预测峰值时间</th><th>预测底部</th></tr></thead>
+<tbody>
+<tr><td><strong>乐观</strong></td><td>机构采用加速，政策利好</td><td>~$255,000</td><td>2025-09 (已过)</td><td>~$80,000-100,000</td></tr>
+<tr><td><strong>基准</strong></td><td>历史周期递减模式延续</td><td>~$160,000</td><td>2025-10 (已过)</td><td>~$55,000-70,000</td></tr>
+<tr><td><strong>保守</strong></td><td>宏观逆风，周期弱化</td><td>~$115,000</td><td>2025-08 (已过)</td><td>~$40,000-55,000</td></tr>
+</tbody></table></div>
+
+<h3>16.4 基于当前数据的修正预测</h3>
+<p>根据实际数据，第四周期峰值已在 <strong>2025-10-06 达到 $126,199.63</strong>，处于基准-保守情景之间。结合历史模式：</p>
+<p><strong>当前周期后续预测 (2026-2028)</strong>:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间窗口</th><th>预测价格区间</th><th>核心逻辑</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$65,000 - $95,000</td><td>峰后持续调整，寻找支撑</td></tr>
+<tr><td>2026 Q3-Q4</td><td>$50,000 - $75,000</td><td>可能的熊市深度区间</td></tr>
+<tr><td>2027 H1</td><td>$40,000 - $60,000</td><td>潜在底部区间（如延续-50%~-65%回撤）</td></tr>
+<tr><td>2027 H2</td><td>$50,000 - $80,000</td><td>底部积累后开始复苏</td></tr>
+<tr><td>2028 (下次减半前)</td><td>$70,000 - $120,000</td><td>减半前复苏上涨</td></tr>
+</tbody></table></div>
+
+<h3>16.5 关键价格水平</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>水平</th><th>价格</th><th>含义</th><th>当前距离</th></tr></thead>
+<tbody>
+<tr><td>第四周期ATH</td><td>$126,200</td><td>顶部阻力</td><td>+60.7%</td></tr>
+<tr><td>MA200</td><td>$103,956</td><td>牛熊分界 (当前在下方)</td><td>+32.3%</td></tr>
+<tr><td>Power Law 公允价</td><td>$93,112</td><td>模型公允估值</td><td>+18.5%</td></tr>
+<tr><td><strong>当前价格</strong></td><td><strong>$78,570</strong></td><td>&mdash;</td><td>&mdash;</td></tr>
+<tr><td>减半价格</td><td>$63,818</td><td>本轮减半时价格，强支撑</td><td>-18.8%</td></tr>
+<tr><td>前轮ATH</td><td>$69,000</td><td>历史关键支撑</td><td>-12.2%</td></tr>
+<tr><td>Mayer 0.5 &times; MA200</td><td>~$52,000</td><td>极端超卖 (历史P5)</td><td>-33.8%</td></tr>
+<tr><td>前轮底部</td><td>$15,476</td><td>极端熊市才会接近</td><td>-80.3%</td></tr>
+</tbody></table></div>
+
+<h3>16.6 下一轮周期前瞻 (2028减半)</h3>
+<p>如果四年周期继续有效：</p>
+<ul>
+<li><strong>预计第五次减半</strong>: 2028年4月前后</li>
+<li><strong>峰值倍数递减推算</strong>: 历史递减率 0.25-0.31，本轮 2.0x &times; 0.28 &asymp; <strong>0.56x</strong>。即如果严格外推递减规律，下一轮减半后的价格涨幅可能不足 1 倍（即从减半价到峰值不到翻倍）。这意味着比特币的减半驱动超额收益正在趋近于零</li>
+<li><strong>Power Law 模型估算</strong>: 2028年减半时 Power Law 公允价格约 $150,000-$170,000，+1.5&sigma; 上轨约 $300,000-$500,000</li>
+<li><strong>综合预测</strong>: 两种方法给出矛盾信号&mdash;&mdash;递减规律暗示涨幅有限（峰值可能仅 $100K-$150K 级别），而 Power Law 仍指向更高目标。这一矛盾本身就反映了当前处于"旧范式（减半驱动）衰减、新范式（机构/宏观驱动）接管"的转折期</li>
+<li><strong>到达峰值</strong>: 如果时间规律延续，减半后约 500-560 天（~2029年9月-11月）</li>
+</ul>
+<blockquote><p><strong>重要提示</strong>: 以上预测仅基于历史模式外推，不构成投资建议。仅3个完整周期的样本量不足以建立统计显著性结论。</p></blockquote>
+</div>
+
+<hr>
+
+<!-- Section 17 -->
+<div class="section" id="sec17">
+<h2>17. 后市走势深度分析 &mdash; BTC 到底怎么走?</h2>
+<blockquote><p>本章基于前文所有数据分析成果，对当前 BTC 所处位置和未来走势给出基于严格数据论证的判断。</p></blockquote>
+
+<h3>17.1 当前位置诊断: 多维度信号汇总</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>当前数值</th><th>历史含义</th><th>信号</th></tr></thead>
+<tbody>
+<tr><td>峰后天数</td><td>118 天</td><td>周期3同位置: -43.9%</td><td>当前(-37.7%)跌幅略浅</td></tr>
+<tr><td>减半后天数</td><td>653 天</td><td>历史峰值平均在Day 536</td><td><strong>已过峰值窗口</strong></td></tr>
+<tr><td>Mayer Multiple</td><td>0.756 (P14)</td><td>&lt;0.8 为超卖区</td><td><strong>超卖</strong></td></tr>
+<tr><td>Price/MA200</td><td>下方 (-24.4%)</td><td>MA200下方=熊市信号</td><td><strong>熊市</strong></td></tr>
+<tr><td>Price/Power Law</td><td>0.844</td><td>&lt;1 为低估</td><td><strong>低估</strong></td></tr>
+<tr><td>30日/365日成交量比</td><td>0.72</td><td>&lt;1 为缩量</td><td><strong>缩量下跌</strong></td></tr>
+<tr><td>90天线性趋势</td><td>-$3,035/月</td><td>持续下行斜率</td><td><strong>下跌趋势</strong></td></tr>
+<tr><td>近20周涨跌比</td><td>7涨/12跌</td><td>空头主导</td><td><strong>弱势</strong></td></tr>
+<tr><td>年化波动率</td><td>40.3%</td><td>历史偏低</td><td>波动率可能扩大</td></tr>
+</tbody></table></div>
+
+<p><strong>综合诊断</strong>: 6/9 个指标指向熊市/弱势，2 个指向超卖/低估（潜在反转信号），1 个中性。<strong>当前大概率处于熊市前半段，但已进入历史超卖区间。</strong></p>
+
+<h3>17.2 周期3&rarr;周期4 精确映射: 如果历史重演</h3>
+<img class="chart-img" src="charts/16_cycle_mapping_forecast.png" alt="周期映射预测" loading="lazy">
+<p><strong>方法</strong>: 将周期3（2021-11峰值后）的走势等比例缩放到周期4（2025-10峰值后），生成两条预测路径:</p>
+<ul>
+<li><strong>蓝色虚线</strong>: 完全复制周期3路径（相同回撤幅度）</li>
+<li><strong>绿色实线</strong>: 递减修正路径（回撤幅度为周期3的50%，基于熊市递减趋势）</li>
+</ul>
+
+<h4>周期3映射 vs 周期4实际（峰后对齐）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>峰后天数</th><th>周期3回撤</th><th>周期4实际</th><th>差异</th><th>周期3映射价格</th></tr></thead>
+<tbody>
+<tr><td>30天</td><td>-31.7%</td><td><strong>-17.7%</strong></td><td>好14%</td><td>$86,178</td></tr>
+<tr><td>60天</td><td>-39.3%</td><td><strong>-29.2%</strong></td><td>好10%</td><td>$76,621</td></tr>
+<tr><td>90天</td><td>-36.2%</td><td><strong>-27.5%</strong></td><td>好9%</td><td>$80,574</td></tr>
+<tr><td>118天(当前)</td><td>-43.9%</td><td><strong>-37.7%</strong></td><td>好6%</td><td>$70,838</td></tr>
+</tbody></table></div>
+
+<p><strong>发现</strong>: 周期4的下跌速度比周期3<strong>慢约6-14个百分点</strong>，差距在缩小。这与本轮周期的特点一致&mdash;&mdash;ETF和机构资金提供了更强的买盘支撑。</p>
+
+<h4>如果完全复制周期3路径（最坏情景参考）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>时间</th><th>映射回撤</th><th>映射价格</th><th>对应日期</th></tr></thead>
+<tbody>
+<tr><td>Day 180</td><td>-56.4%</td><td><strong>$55,000</strong></td><td>2026-04</td></tr>
+<tr><td>Day 270</td><td>-66.4%</td><td><strong>$42,600</strong></td><td>2026-07</td></tr>
+<tr><td>Day 376 (底部)</td><td>-77.5%</td><td><strong>$28,400</strong></td><td>2026-10</td></tr>
+</tbody></table></div>
+
+<h4>递减修正路径（回撤&times;0.5, 基准情景）</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>时间</th><th>修正回撤</th><th>修正价格</th><th>对应日期</th></tr></thead>
+<tbody>
+<tr><td>Day 180</td><td>-28.2%</td><td><strong>$90,600</strong></td><td>2026-04</td></tr>
+<tr><td>Day 270</td><td>-33.2%</td><td><strong>$84,300</strong></td><td>2026-07</td></tr>
+<tr><td>底部 (约Day 350)</td><td><strong>-38.8%</strong></td><td><strong>$77,200</strong></td><td>2026-09</td></tr>
+</tbody></table></div>
+
+<h3>17.3 历史回撤 -35% 后的走势统计</h3>
+<p>从币安 BTCUSDT 历史数据中，找到 <strong>7 次</strong> 价格从ATH回撤达到 -33%~-40% 的情况:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>日期</th><th>回撤</th><th>之后最深</th><th>30天后</th><th>90天后</th><th>365天后</th><th>结局</th></tr></thead>
+<tbody>
+<tr><td>2017-09-14</td><td>-35.4%</td><td>-70.4%</td><td>+77.2%</td><td>+412.7%</td><td>+103.4%</td><td>牛市中期回调，继续新高</td></tr>
+<tr><td>2017-12-30</td><td>-37.2%</td><td><strong>-83.8%</strong></td><td>-4.5%</td><td>-43.0%</td><td>-70.3%</td><td>周期顶部，深度熊市</td></tr>
+<tr><td>2018-01-11</td><td>-33.1%</td><td><strong>-83.8%</strong></td><td>-34.4%</td><td>-48.3%</td><td>-72.9%</td><td>周期顶部，深度熊市</td></tr>
+<tr><td>2021-05-18</td><td>-33.9%</td><td>-57.9%</td><td>-10.5%</td><td>+9.6%</td><td>-28.9%</td><td>中期调整，二次冲顶</td></tr>
+<tr><td>2021-09-20</td><td>-33.7%</td><td><strong>-72.8%</strong></td><td>+49.4%</td><td>+8.9%</td><td>-54.6%</td><td>反弹后继续熊市</td></tr>
+<tr><td>2021-12-17</td><td>-33.1%</td><td><strong>-77.1%</strong></td><td>-6.6%</td><td>-10.9%</td><td>-63.9%</td><td>周期顶部，深度熊市</td></tr>
+<tr><td><strong>2026-01-30</strong></td><td><strong>-33.2%</strong></td><td><strong>-37.7%</strong>*</td><td>-6.8%</td><td>&mdash;</td><td>&mdash;</td><td><em>进行中</em></td></tr>
+</tbody></table></div>
+
+<p><strong>统计结论</strong>:</p>
+<ul>
+<li>7次中，<strong>4次</strong>之后价格继续大幅下跌（最终回撤超-70%），<strong>2次</strong>为中期调整后反弹，<strong>1次</strong>待定</li>
+<li>关键区分因素: 如果发生在<strong>周期后半段</strong>（减半后&gt;1年），继续深跌的概率极高</li>
+<li>当前处于减半后 653 天，属于周期后半段 &rarr; <strong>历史概率偏向继续下跌</strong></li>
+</ul>
+
+<h3>17.4 Mayer Multiple 超卖信号的历史收益</h3>
+<p>当 Mayer Multiple &lt; 0.8 时（当前 0.756），历史上的后续收益:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>6个月后</th><th>12个月后</th></tr></thead>
+<tbody>
+<tr><td>平均收益</td><td><strong>+39.6%</strong></td><td><strong>+89.4%</strong></td></tr>
+<tr><td>中位收益</td><td>+25.5%</td><td>+45.6%</td></tr>
+<tr><td>正收益概率</td><td>59%</td><td><strong>77%</strong></td></tr>
+<tr><td>最乐观(P90)</td><td>+175.0%</td><td>+171.0%</td></tr>
+<tr><td>最悲观(P10)</td><td>-44.3%</td><td>-34.3%</td></tr>
+<tr><td>最差情况</td><td>-53.2%</td><td>&mdash;</td></tr>
+</tbody></table></div>
+
+<p><strong>解读</strong>: Mayer 超卖信号在12个月维度上有 <strong>77% 的正收益概率</strong>，平均+89%。但注意：这些超卖通常发生在熊市中段，意味着<strong>短期（6个月）内仍有41%的概率继续亏损</strong>，先跌后涨是典型模式。</p>
+
+<h3>17.5 三种情景完整时间线</h3>
+<img class="chart-img" src="charts/18_scenario_timeline.png" alt="情景时间线" loading="lazy">
+<p>基于以上所有数据论证，构建三种情景:</p>
+
+<h4>情景 A: 温和调整 (概率: 25%)</h4>
+<p><strong>逻辑</strong>: ETF 持续吸筹 + 全球降息周期 + 机构需求支撑，回撤幅度历史最小</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>价格区间</th><th>事件</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$70,000 - $85,000</td><td>底部盘整，Mayer 接近 0.7</td></tr>
+<tr><td>2026 Q3 (底部)</td><td><strong>$63,000 - $70,000</strong></td><td>触及减半价/前轮ATH支撑</td></tr>
+<tr><td>2026 Q4</td><td>$75,000 - $90,000</td><td>开始复苏</td></tr>
+<tr><td>2027</td><td>$90,000 - $130,000</td><td>收复ATH</td></tr>
+<tr><td>2028减半前</td><td>$110,000 - $150,000</td><td>减半预期推动</td></tr>
+</tbody></table></div>
+<ul>
+<li>最大回撤: <strong>-45% ~ -50%</strong> (从ATH)</li>
+<li>底部时间: <strong>2026年8月前后</strong></li>
+<li>恢复ATH时间: <strong>2027年中</strong></li>
+</ul>
+
+<h4>情景 B: 标准熊市 (概率: 50%)</h4>
+<p><strong>逻辑</strong>: 遵循历史周期模式，但回撤幅度因市场成熟化而递减</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>价格区间</th><th>事件</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$65,000 - $80,000</td><td>继续缩量下跌</td></tr>
+<tr><td>2026 Q3-Q4 (底部)</td><td><strong>$50,000 - $63,000</strong></td><td>恐慌性抛售，跌破减半价</td></tr>
+<tr><td>2027 H1</td><td>$55,000 - $75,000</td><td>底部积累</td></tr>
+<tr><td>2027 H2</td><td>$70,000 - $95,000</td><td>复苏上涨</td></tr>
+<tr><td>2028减半前</td><td>$90,000 - $130,000</td><td>减半行情</td></tr>
+</tbody></table></div>
+<ul>
+<li>最大回撤: <strong>-55% ~ -60%</strong> (从ATH)</li>
+<li>底部价格: <strong>~$50,000 - $60,000</strong></li>
+<li>底部时间: <strong>2026年10月前后</strong> (峰后约 376 天，与周期3一致)</li>
+<li>恢复ATH时间: <strong>2027年底-2028年初</strong></li>
+</ul>
+
+<h4>情景 C: 深度熊市 (概率: 25%)</h4>
+<p><strong>逻辑</strong>: 宏观黑天鹅 + 监管打击 + 流动性危机，回撤幅度接近周期3</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间节点</th><th>价格区间</th><th>事件</th></tr></thead>
+<tbody>
+<tr><td>2026 Q1-Q2</td><td>$60,000 - $78,000</td><td>加速下跌</td></tr>
+<tr><td>2026 Q3</td><td>$45,000 - $55,000</td><td>跌破关键支撑</td></tr>
+<tr><td>2027 Q1 (底部)</td><td><strong>$37,000 - $45,000</strong></td><td>投降式抛售</td></tr>
+<tr><td>2027 H2</td><td>$45,000 - $65,000</td><td>缓慢筑底</td></tr>
+<tr><td>2028</td><td>$60,000 - $100,000</td><td>减半前复苏</td></tr>
+</tbody></table></div>
+<ul>
+<li>最大回撤: <strong>-65% ~ -70%</strong> (从ATH)</li>
+<li>底部价格: <strong>~$38,000 - $45,000</strong></li>
+<li>底部时间: <strong>2027年2月前后</strong></li>
+<li>恢复ATH时间: <strong>2028年下半年或更晚</strong></li>
+</ul>
+
+<h3>17.6 概率加权预测</h3>
+<p>将三种情景概率加权:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>概率加权值</th><th>计算过程</th></tr></thead>
+<tbody>
+<tr><td><strong>预期底部价格</strong></td><td><strong>$52,000 - $62,000</strong></td><td>A&times;25% + B&times;50% + C&times;25%</td></tr>
+<tr><td><strong>预期底部时间</strong></td><td><strong>2026年9-10月</strong></td><td>峰后 ~340-380 天</td></tr>
+<tr><td><strong>预期从ATH最大回撤</strong></td><td><strong>-53% ~ -58%</strong></td><td>加权平均</td></tr>
+<tr><td><strong>预期恢复ATH时间</strong></td><td><strong>2027年底 ~ 2028年Q2</strong></td><td>&mdash;</td></tr>
+<tr><td><strong>2028减半前价格</strong></td><td><strong>$90,000 - $130,000</strong></td><td>&mdash;</td></tr>
+</tbody></table></div>
+
+<h3>17.7 关键时间节点与操作参考</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>时间</th><th>关注事件</th><th>数据验证点</th></tr></thead>
+<tbody>
+<tr><td><strong>2026年3-4月</strong></td><td>峰后180天窗口</td><td>周期3同位置回撤-56%，如周期4&lt;-45%则确认递减</td></tr>
+<tr><td><strong>2026年7-9月</strong></td><td>潜在底部区域</td><td>关注Mayer是否触及0.5-0.6（极端超卖）</td></tr>
+<tr><td><strong>2026年10月</strong></td><td>峰后376天（周期3底部对应日）</td><td>周期3此时见底，如周期4也企稳则底部确认</td></tr>
+<tr><td><strong>2027年Q1</strong></td><td>如仍在下跌则指向深度熊市</td><td>日成交量是否出现"投降式放量"</td></tr>
+<tr><td><strong>2027年H2</strong></td><td>观察是否启动复苏</td><td>价格是否站回MA200</td></tr>
+<tr><td><strong>2028年4月</strong></td><td>预计第五次减半</td><td>减半前6个月通常开始上涨</td></tr>
+</tbody></table></div>
+
+<h3>17.8 核心结论: BTC 后市怎么走</h3>
+<ol>
+<li><p><strong>短期 (1-3个月)</strong>: 大概率继续震荡偏弱。90天线性趋势 -$3,035/月，20周仅7涨12跌，缩量下跌特征明显。不排除反弹至 $85,000-$95,000（Mayer超卖反弹），但难以持续</p></li>
+<li><p><strong>中期 (3-12个月)</strong>: 这是最关键的阶段。概率加权预测底部在 <strong>$52,000-$62,000</strong>，时间在 <strong>2026年8-10月</strong>。历史上每次减半后第2年都是深度熊市（2018: -72%，2022: -65%），2026年大概率延续这一规律</p></li>
+<li><p><strong>长期 (1-2年)</strong>: 历史上 Mayer&lt;0.8 后12个月有 <strong>77% 的概率正收益</strong>，平均+89%。即使经历熊市，长期价值投资者在底部区间的预期收益依然显著。Power Law模型显示当前已处于低估区间</p></li>
+<li><p><strong>还会涨吗?</strong> &mdash; <strong>会</strong>。每轮减半周期虽然涨幅递减，但都创出新高。关键问题不是"会不会涨"，而是"什么时候涨"。基于数据，下一轮主升浪预计在 <strong>2027年下半年~2028年</strong> 启动，由第五次减半催化</p></li>
+<li><p><strong>会跌到多少?</strong> &mdash; 概率加权底部: <strong>$52,000-$62,000</strong>。如果严格复制周期3则可能低至 $28,000-$38,000，但考虑到机构化程度提升，回撤幅度大概率递减</p></li>
+</ol>
+
+<blockquote><p><strong>免责声明</strong>: 以上分析仅基于历史数据模式推演，不构成投资建议。加密货币市场存在极高风险，过去表现不代表未来结果。</p></blockquote>
+</div>
+
+<hr>
+
+<!-- Section 18 -->
+<div class="section" id="sec18">
+<h2>18. 总结与风险提示</h2>
+
+<h3>18.1 四年周期理论验证总结</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>验证项</th><th>结论</th><th>支持度</th></tr></thead>
+<tbody>
+<tr><td>减半后上涨</td><td><strong>成立</strong>: 所有可观测减半后均出现显著上涨</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+<tr><td>到达峰值时间 (~536天)</td><td><strong>高度一致</strong>: 527-546天，标准差仅9.5天</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+<tr><td>峰值后熊市</td><td><strong>成立</strong>: 每次峰值后均出现显著回调</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+<tr><td>峰值倍数递减</td><td><strong>成立</strong>: 96x&rarr;30x&rarr;8x&rarr;2x，递减率约0.25-0.31</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+<tr><td>熊市回撤递减</td><td><strong>趋势成立</strong>: -85%&rarr;-84%&rarr;-77%&rarr;-37%(进行中)</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td></tr>
+<tr><td>波动率递减</td><td><strong>成立</strong>: 从110%降至42%，长期下降趋势明显</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+<tr><td>四年周期长度</td><td><strong>基本成立</strong>: 周期约3.8-4.0年</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td></tr>
+</tbody></table></div>
+
+<h3>18.2 当前周期的特殊性</h3>
+<ol>
+<li><strong>首次减半前突破ATH</strong>: 2024年3月价格在减半前就突破了上轮$69,000的ATH，这是前所未有的</li>
+<li><strong>ETF 带来结构性变化</strong>: BlackRock IBIT 等现货 ETF 改变了市场参与者结构</li>
+<li><strong>涨幅倍数显著递减</strong>: 本轮仅2.0x，远低于前几轮，但符合递减趋势</li>
+<li><strong>波动率历史最低</strong>: 2025年年化波动率仅41.7%，是比特币历史上最低的牛市峰值年波动率</li>
+<li><strong>减半后第一年转负</strong>: 2025年收益 -7.3%，不同于2021年的+57.6%，峰值时间前移</li>
+</ol>
+
+<h3>18.3 四年周期是否已"失效"?</h3>
+<p>基于本报告的数据分析，我们认为：</p>
+<p><strong>四年周期并未失效，但正在演变</strong>:</p>
+<ul>
+<li><strong>不变的</strong>: 减半&rarr;上涨&rarr;见顶&rarr;回调的基本节奏仍在，到达峰值的时间窗口惊人地一致</li>
+<li><strong>在变的</strong>: 涨幅倍数递减、波动率递减、熊市回撤趋缓、机构参与度增加</li>
+<li><strong>新变量</strong>: ETF资金流、宏观利率政策、监管框架等传统金融因素影响力上升</li>
+</ul>
+<p>这更像是一个"衰减中的周期振荡"&mdash;&mdash;振幅在减小，但频率（周期长度）基本保持稳定。</p>
+
+<h3>18.4 风险提示</h3>
+<blockquote><p><strong>免责声明</strong>: 本报告仅为基于历史数据的学术研究，不构成任何投资建议。</p></blockquote>
+<ol>
+<li><strong>历史不代表未来</strong>: 过去3个周期的模式不保证第4、5个周期会重复</li>
+<li><strong>黑天鹅风险</strong>: COVID-19、LUNA崩盘、FTX暴雷等不可预测事件可以瞬间打破周期节奏</li>
+<li><strong>监管风险</strong>: 全球监管政策变化可能从根本上改变市场结构</li>
+<li><strong>宏观经济风险</strong>: 利率、通胀、美元指数等宏观因素的影响力在增强</li>
+<li><strong>技术风险</strong>: 量子计算、协议漏洞等技术风险虽然概率低但影响大</li>
+<li><strong>流动性风险</strong>: 在极端市场条件下，流动性可能骤然枯竭</li>
+</ol>
+</div>
+
+<hr>
+
+<!-- Appendix -->
+<div class="section" id="appendix">
+<h2>附录</h2>
+
+<h3>A. 数据来源与API</h3>
+<ul>
+<li><strong>交易所</strong>: Binance (币安)</li>
+<li><strong>交易对</strong>: BTCUSDT</li>
+<li><strong>API 端点</strong>: <code>GET https://api.binance.com/api/v3/klines</code></li>
+<li><strong>API 参数</strong>:
+  <ul>
+    <li><code>symbol</code>: BTCUSDT</li>
+    <li><code>interval</code>: 1d / 8h / 1w / 1M</li>
+    <li><code>startTime</code>: 1502928000000 (2017-08-17 UTC)</li>
+    <li><code>limit</code>: 1000 (最大值)</li>
+  </ul>
+</li>
+<li><strong>数据字段</strong>: 开盘时间、开盘价、最高价、最低价、收盘价、成交量、收盘时间、成交额、成交笔数、主动买入量、主动买入额</li>
+</ul>
+
+<h3>B. 图表索引</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>编号</th><th>图表名称</th><th>文件路径</th></tr></thead>
+<tbody>
+<tr><td>01</td><td>价格走势全景图</td><td><code>charts/01_price_overview_halvings.png</code></td></tr>
+<tr><td>02</td><td>减半后周期对比</td><td><code>charts/02_cycle_comparison_from_halving.png</code></td></tr>
+<tr><td>03</td><td>历史回撤分析</td><td><code>charts/03_drawdown_analysis.png</code></td></tr>
+<tr><td>04</td><td>月度收益率热力图</td><td><code>charts/04_monthly_returns_heatmap.png</code></td></tr>
+<tr><td>05</td><td>成交量分析</td><td><code>charts/05_volume_analysis.png</code></td></tr>
+<tr><td>06</td><td>波动率周期分析</td><td><code>charts/06_volatility_cycle.png</code></td></tr>
+<tr><td>07</td><td>8小时K线分析</td><td><code>charts/07_8h_kline_analysis.png</code></td></tr>
+<tr><td>08</td><td>周K线趋势分析</td><td><code>charts/08_weekly_analysis.png</code></td></tr>
+<tr><td>09</td><td>关键均线系统</td><td><code>charts/09_moving_averages.png</code></td></tr>
+<tr><td>10</td><td>价格预测模型</td><td><code>charts/10_prediction_model.png</code></td></tr>
+<tr><td>11</td><td>年度表现统计</td><td><code>charts/11_yearly_performance.png</code></td></tr>
+<tr><td>12</td><td>周期阶段划分</td><td><code>charts/12_cycle_phase_analysis.png</code></td></tr>
+<tr><td>13</td><td>Mayer Multiple 估值</td><td><code>charts/13_mayer_multiple.png</code></td></tr>
+<tr><td>14</td><td>Power Law 对数回归</td><td><code>charts/14_power_law_regression.png</code></td></tr>
+<tr><td>15</td><td>风险指标仪表盘</td><td><code>charts/15_risk_metrics_dashboard.png</code></td></tr>
+<tr><td>16</td><td>周期映射预测</td><td><code>charts/16_cycle_mapping_forecast.png</code></td></tr>
+<tr><td>17</td><td>概率锥预测</td><td><code>charts/17_probability_cones.png</code></td></tr>
+<tr><td>18</td><td>三种情景时间线</td><td><code>charts/18_scenario_timeline.png</code></td></tr>
+</tbody></table></div>
+
+<h3>C. 原始数据文件</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>文件</th><th>说明</th><th>记录数</th></tr></thead>
+<tbody>
+<tr><td><code>data/btcusdt_1d.csv</code></td><td>日K线数据</td><td>3,091</td></tr>
+<tr><td><code>data/btcusdt_8h.csv</code></td><td>8小时K线数据</td><td>9,269</td></tr>
+<tr><td><code>data/btcusdt_1w.csv</code></td><td>周K线数据</td><td>441</td></tr>
+<tr><td><code>data/btcusdt_1M.csv</code></td><td>月K线数据</td><td>102</td></tr>
+<tr><td><code>data/statistics.json</code></td><td>统计分析结果</td><td>-</td></tr>
+</tbody></table></div>
+</div>
+
+<hr>
+<p style="text-align:center; color:#94A3B8; font-size:13px; padding: 20px 0;">
+  <em>报告生成时间: 2026-02-01 | 数据截至: 2026-02-01 | 使用币安公开 API 真实数据</em>
+</p>
+
+</div><!-- /content-wrap -->
+</div><!-- /main-content -->
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">&uarr;</button>
+
+<script>
+// Back to Top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+btn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Intersection Observer for TOC highlight
+const sections = document.querySelectorAll('.section[id]');
+const tocLinks = document.querySelectorAll('.sidebar a[data-section]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(link => link.classList.remove('active'));
+      const active = document.querySelector(`.sidebar a[data-section="${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+sections.forEach(sec => observer.observe(sec));
+
+// Live BTC Price from Binance public API
+(async function fetchBtcPrice() {
+  const el = document.getElementById('liveBtcPrice');
+  const badge = document.getElementById('liveBadge');
+  try {
+    const resp = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+    if (!resp.ok) throw new Error('API error');
+    const data = await resp.json();
+    const price = parseFloat(data.lastPrice);
+    const change = parseFloat(data.priceChangePercent);
+    const formatted = price.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+    const sign = change >= 0 ? '+' : '';
+    const cls = change >= 0 ? 'up' : 'down';
+    el.textContent = formatted;
+    badge.style.display = 'inline-block';
+    const changeSpan = document.createElement('span');
+    changeSpan.className = 'price-change ' + cls;
+    changeSpan.textContent = sign + change.toFixed(2) + '%';
+    el.parentElement.appendChild(changeSpan);
+  } catch (e) {
+    el.textContent = '$78,569.99';
+    el.title = '实时获取失败，显示报告生成时价格';
+  }
+  // Refresh every 30 seconds
+  setTimeout(fetchBtcPrice, 30000);
+})();
+</script>
+</body>
+</html>
