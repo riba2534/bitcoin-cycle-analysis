@@ -158,4 +158,4 @@ bitcoin-cycle-analysis/
 
 ## License
 
-[MIT License](LICENSE) - Copyright (c) 2025 riba2534
+[MIT License](LICENSE) - Copyright (c) 2026 riba2534
